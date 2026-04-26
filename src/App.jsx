@@ -63,6 +63,12 @@ const content = {
       "This section makes the AI signal explicit: what I am learning, building, and practicing right now.",
     backgroundIntro:
       "The site now mirrors the strongest signals from my resume: education, teaching, service, languages, and technical range.",
+    demoAccess: "Demo access",
+    unitNumber: "Unit",
+    username: "Username",
+    password: "Password",
+    accessNote: "Login details",
+    signupNote: "You can also create a new account directly in the system.",
     live: "Live site",
     code: "Source",
     noLive: "Repository only",
@@ -105,6 +111,12 @@ const content = {
       "האזור הזה מבליט בצורה ישירה מה אני לומד, בונה ומתרגל סביב AI.",
     backgroundIntro:
       "האתר משקף את האותות החזקים מקורות החיים: השכלה, הוראה, שירות, שפות ורוחב טכנולוגי.",
+    demoAccess: "פרטי גישת דמו",
+    unitNumber: "מספר יחידה",
+    username: "שם משתמש",
+    password: "סיסמה",
+    accessNote: "פרטי כניסה",
+    signupNote: "באתר הזה אפשר גם לבצע הרשמה עצמאית ולהיכנס עם משתמש חדש.",
     live: "אתר באוויר",
     code: "קוד מקור",
     noLive: "קוד בלבד",
@@ -131,6 +143,10 @@ const projects = [
     stack: ["Python", "PyTorch", "XAI", "Deep Learning"],
     live: "https://mediclear-project.onrender.com/",
     repo: "https://github.com/orgs/Final-Project-explainability/repositories",
+    access: {
+      username: "admin",
+      password: "852056",
+    },
     accent: "border-teal-400/50 bg-teal-400/10 text-teal-950",
     featured: true,
   },
@@ -144,6 +160,11 @@ const projects = [
     stack: ["Vue 3", "Pinia", "Supabase", "Cloudflare"],
     live: "https://hr-tenant.pages.dev/login",
     repo: "https://github.com/odedati/hr-battalion-system",
+    access: {
+      unit: "5280",
+      username: "admin",
+      password: "6589593",
+    },
     accent: "border-emerald-400/50 bg-emerald-400/10 text-emerald-950",
     featured: true,
   },
@@ -170,6 +191,11 @@ const projects = [
     stack: ["Vue", "JavaScript", "Backend API", "Render"],
     live: "https://vuerecipesproject.onrender.com/",
     repo: "https://github.com/odedati/social-network-fullstack",
+    access: {
+      username: "oded",
+      password: "852056!",
+      signup: true,
+    },
     accent: "border-rose-400/50 bg-rose-400/10 text-rose-950",
     featured: false,
   },
@@ -480,6 +506,38 @@ function App() {
                       </span>
                     ))}
                   </div>
+
+                  {project.access && (
+                    <div className="mt-6 rounded-lg border border-zinc-200 bg-zinc-50 p-4">
+                      <div className="text-sm font-bold text-zinc-900">
+                        {t.demoAccess}
+                      </div>
+                      <p className="mt-2 text-sm leading-6 text-zinc-600">
+                        {t.accessNote}
+                      </p>
+                      <div className="mt-3 grid gap-2 text-sm text-zinc-700">
+                        {project.access.unit && (
+                          <div>
+                            <span className="font-semibold">{t.unitNumber}:</span>{" "}
+                            {project.access.unit}
+                          </div>
+                        )}
+                        <div>
+                          <span className="font-semibold">{t.username}:</span>{" "}
+                          {project.access.username}
+                        </div>
+                        <div>
+                          <span className="font-semibold">{t.password}:</span>{" "}
+                          {project.access.password}
+                        </div>
+                      </div>
+                      {project.access.signup && (
+                        <p className="mt-3 text-sm leading-6 text-zinc-600">
+                          {t.signupNote}
+                        </p>
+                      )}
+                    </div>
+                  )}
 
                   <div className="mt-7 flex flex-wrap gap-3">
                     {project.live ? (
