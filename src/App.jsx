@@ -1,819 +1,592 @@
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import {
   ArrowUpRight,
-  Award,
-  BookOpen,
-  Brain,
-  Briefcase,
-  Code2,
-  Database,
-  ExternalLink,
-  FileText,
-  GitBranch,
-  Globe,
-  GraduationCap,
+  Check,
+  Copy,
   Languages,
-  Layers,
-  LineChart,
   Mail,
+  Moon,
   Phone,
-  Server,
-  ShieldCheck,
-  Sparkles,
+  Plus,
+  Sun,
 } from "lucide-react";
-import heroImage from "./assets/hero.png";
+import {
+  background,
+  content,
+  focus,
+  profile,
+  projects,
+  skills,
+  ticker,
+} from "./data";
 
-const profile = {
-  email: "oded.atias@gmail.com",
-  phone: "054-811-8698",
-  github: "https://github.com/odedati",
-  githubLabel: "github.com/odedati",
-  linkedin: "https://www.linkedin.com/in/oded-atias-836b77251",
-  linkedinLabel: "linkedin.com/in/oded-atias-836b77251",
-};
+function readStored(key) {
+  try {
+    return localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
 
-const content = {
-  en: {
-    dir: "ltr",
-    nav: ["Projects", "AI Focus", "Background", "Contact"],
-    switchLabel: "עברית",
-    eyebrow: "AI-oriented Software Engineer",
-    openToWork: "Open to work",
-    name: "Oded Atias",
-    title:
-      "Software and Information Systems Engineer focused on AI, data, full-stack development, and software engineering.",
-    intro:
-      "B.Sc. graduate from Ben-Gurion University, enthusiastic about AI, machine learning, and turning technical ideas into deployed products people can actually try.",
-    primaryCta: "View projects",
-    secondaryCta: "Contact me",
-    proof: ["AI & XAI projects", "Public deployed demos", "Full-stack delivery"],
-    highlightTitle: "Building proof, not just listing skills",
-    highlightText:
-      "I combine software engineering fundamentals with AI-assisted development, rapid prototyping, Python, PyTorch, JavaScript, React, Vue, SQL, Node.js, and public deployments.",
-    sections: {
-      projects: "Selected projects",
-      ai: "AI focus",
-      background: "Professional background",
-      expertise: "Technical strengths",
-      contact: "Let us build something useful",
-    },
-    projectsIntro:
-      "Public links and repositories that show AI curiosity, production-minded implementation, and the ability to ship.",
-    aiIntro:
-      "This section makes the AI signal explicit: what I am learning, building, and practicing right now.",
-    backgroundIntro:
-      "The site now mirrors the strongest signals from my resume: education, teaching, service, languages, and technical range.",
-    demoAccess: "Demo access",
-    unitNumber: "Unit",
-    username: "Username",
-    password: "Password",
-    accessNote: "Login details",
-    signupNote: "You can also create a new account directly in the system.",
-    live: "Live site",
-    code: "Source",
-    noLive: "Repository only",
-    featured: "Featured",
-    expertiseIntro:
-      "Technical strengths that support AI-oriented product building and full-stack delivery.",
-    contactText:
-      "Open to junior software engineering, AI-product, full-stack, and frontend opportunities.",
-    resumeLabel: "Resume",
-    resumeNote: "Resume details are reflected on this page",
-    metricProjects: "Projects",
-    metricLive: "Live sites",
-  },
-  he: {
-    dir: "rtl",
-    nav: ["פרויקטים", "מיקוד AI", "רקע", "יצירת קשר"],
-    switchLabel: "English",
-    eyebrow: "מהנדס תוכנה מוכוון AI",
-    openToWork: "פתוח להזדמנויות",
-    name: "עודד אטיאס",
-    title: "מהנדס תוכנה ומערכות מידע עם מיקוד ב-AI, דאטה, פיתוח Full-stack והנדסת תוכנה.",
-    intro:
-      "בוגר B.Sc. בהנדסת מערכות מידע מאוניברסיטת בן-גוריון, עם עניין חזק ב-AI, Machine Learning והפיכת רעיונות טכניים למוצרים שאפשר לפתוח, לבדוק ולהתרשם מהם.",
-    primaryCta: "לפרויקטים",
-    secondaryCta: "דברו איתי",
-    proof: ["פרויקטי AI ו-XAI", "דמואים פומביים באוויר", "פיתוח Full-stack"],
-    highlightTitle: "להראות הוכחה, לא רק לרשום יכולות",
-    highlightText:
-      "אני משלב יסודות הנדסת תוכנה עם פיתוח בסיוע כלי AI, בניית אבות טיפוס מהירה, Python, PyTorch, JavaScript, React, Vue, SQL, Node.js ופרויקטים שעלו לאוויר.",
-    sections: {
-      projects: "פרויקטים נבחרים",
-      ai: "מיקוד AI",
-      background: "רקע מקצועי",
-      expertise: "חוזקות טכניות",
-      contact: "בואו נבנה משהו שימושי",
-    },
-    projectsIntro:
-      "קישורים פומביים וריפוזיטוריז שמראים סקרנות ל-AI, יכולת ביצוע ויכולת להעלות מוצר לאוויר.",
-    aiIntro:
-      "האזור הזה מבליט בצורה ישירה מה אני לומד, בונה ומתרגל סביב AI.",
-    backgroundIntro:
-      "האתר משקף את האותות החזקים מקורות החיים: השכלה, הוראה, שירות, שפות ורוחב טכנולוגי.",
-    demoAccess: "פרטי גישת דמו",
-    unitNumber: "מספר יחידה",
-    username: "שם משתמש",
-    password: "סיסמה",
-    accessNote: "פרטי כניסה",
-    signupNote: "באתר הזה אפשר גם לבצע הרשמה עצמאית ולהיכנס עם משתמש חדש.",
-    live: "אתר באוויר",
-    code: "קוד מקור",
-    noLive: "קוד בלבד",
-    featured: "מומלץ",
-    expertiseIntro:
-      "חוזקות טכניות שתומכות בבניית מוצרים מוכווני AI ובפיתוח Full-stack.",
-    contactText:
-      "פתוח להזדמנויות Junior Software Engineer, מוצרי AI, Full-stack ו-Frontend.",
-    resumeLabel: "קורות חיים",
-    resumeNote: "פרטי קורות החיים משולבים באתר",
-    metricProjects: "פרויקטים",
-    metricLive: "אתרים באוויר",
-  },
-};
+function writeStored(key, value) {
+  try {
+    localStorage.setItem(key, value);
+  } catch {
+    /* storage can be blocked; the page works without it */
+  }
+}
 
-const projects = [
-  {
-    title: "Explainability in Deep Learning",
-    type: { en: "AI explainability · Public demo", he: "הסברתיות AI · דמו פומבי" },
-    summary: {
-      en: "A deep learning explainability project using XAI techniques and feature-attribution visualizations to make neural network decisions easier to interpret.",
-      he: "פרויקט הסברתיות בלמידה עמוקה עם טכניקות XAI וויזואליזציות Feature Attribution כדי להפוך החלטות של רשתות נוירונים לברורות יותר.",
-    },
-    stack: ["Python", "PyTorch", "XAI", "Deep Learning"],
-    live: "https://mediclear-project.onrender.com/",
-    repo: "https://github.com/orgs/Final-Project-explainability/repositories",
-    access: {
-      username: "admin",
-      password: "852056",
-    },
-    accent: "border-teal-400/50 bg-teal-400/10 text-teal-950",
-    featured: true,
-  },
-  {
-    title: "HR Battalion System",
-    type: { en: "Operations platform", he: "פלטפורמת ניהול" },
-    summary: {
-      en: "A battalion management platform for attendance, soldier records, dashboards, and operational workflows.",
-      he: "מערכת ניהול גדודית לנוכחות, רשומות חיילים, דשבורדים ותהליכים תפעוליים.",
-    },
-    stack: ["Vue 3", "Pinia", "Supabase", "Cloudflare"],
-    live: "https://hr-tenant.pages.dev/login",
-    repo: "https://github.com/odedati/hr-battalion-system",
-    access: {
-      unit: "5280",
-      username: "admin",
-      password: "6589593",
-    },
-    accent: "border-emerald-400/50 bg-emerald-400/10 text-emerald-950",
-    featured: true,
-  },
-  {
-    title: "AlgoTrade",
-    type: { en: "Automated trading system", he: "מערכת מסחר אוטומטי" },
-    summary: {
-      en: "A cryptocurrency trading bot with REST API data fetching, backtesting modules, and risk-management logic using Pandas and NumPy.",
-      he: "בוט מסחר קריפטו עם שליפת נתוני שוק דרך REST APIs, מודולי Backtesting ולוגיקת ניהול סיכונים עם Pandas ו-NumPy.",
-    },
-    stack: ["Python", "REST APIs", "Pandas", "NumPy"],
-    live: "",
-    repo: "https://github.com/odedati/AlgoTrage_final_project",
-    accent: "border-amber-400/50 bg-amber-400/10 text-amber-950",
-    featured: false,
-  },
-  {
-    title: "Social Network Fullstack",
-    type: { en: "Full-stack platform", he: "פלטפורמת Full-stack" },
-    summary: {
-      en: "A social platform with separated frontend and backend projects, deployment configuration, authentication, and data-flow work.",
-      he: "רשת חברתית עם הפרדה בין Frontend ו-Backend, קונפיגורציית פריסה, אימות משתמשים ועבודה עם זרימות מידע.",
-    },
-    stack: ["Vue", "JavaScript", "Backend API", "Render"],
-    live: "https://vuerecipesproject.onrender.com/",
-    repo: "https://github.com/odedati/social-network-fullstack",
-    access: {
-      username: "oded",
-      password: "852056!",
-      signup: true,
-    },
-    accent: "border-rose-400/50 bg-rose-400/10 text-rose-950",
-    featured: false,
-  },
-  {
-    title: "Yaakov Bodo Website",
-    type: { en: "Responsive website", he: "אתר רספונסיבי" },
-    summary: {
-      en: "A cultural biography website with gallery, media, QR flow, Web 1/2/3 Q&A, and contact form.",
-      he: "אתר ביוגרפי-תרבותי עם גלריה, מדיה, QR, שאלות Web 1/2/3 וטופס יצירת קשר.",
-    },
-    stack: ["HTML", "CSS", "JavaScript", "GitHub Pages"],
-    live: "https://wed-2023.github.io/311394365/",
-    repo: "https://github.com/WED-2023/311394365",
-    accent: "border-sky-400/50 bg-sky-400/10 text-sky-950",
-    featured: false,
-  },
-];
+function initialLanguage() {
+  const stored = readStored("lang");
+  if (stored === "en" || stored === "he") return stored;
+  return "en";
+}
 
-const background = [
-  {
-    icon: GraduationCap,
-    title: { en: "Education", he: "השכלה" },
-    eyebrow: { en: "Ben-Gurion University · 2021-2025", he: "אוניברסיטת בן-גוריון · 2021-2025" },
-    text: {
-      en: "B.Sc. in Information Systems Engineering. Main coursework: Deep Learning, Big Data, Computer & Network Security, Data Communications, Information Retrieval, Databases, Operating Systems, Algorithms, Advanced Programming, Computing Systems, and Data Structures.",
-      he: "B.Sc. בהנדסת מערכות מידע. קורסים מרכזיים: Deep Learning, Big Data, אבטחת מחשבים ורשתות, תקשורת נתונים, אחזור מידע, בסיסי נתונים, מערכות הפעלה, אלגוריתמים, תכנות מתקדם, מערכות מחשוב ומבני נתונים.",
-    },
-  },
-  {
-    icon: Briefcase,
-    title: { en: "Teaching experience", he: "ניסיון בהוראה" },
-    eyebrow: { en: "Python Lab Assistant · 2022-2024", he: "עוזר הוראה במעבדת Python · 2022-2024" },
-    text: {
-      en: "Led and mentored first-year students in Introduction to Computer Science, explaining core programming concepts and supporting problem-solving skills. Also taught high-school mathematics for matriculation exams.",
-      he: "הובלתי וליוויתי סטודנטים בשנה א' בקורס מבוא למדעי המחשב, עם דגש על תכנות ב-Python ופתרון בעיות. בנוסף לימדתי מתמטיקה לבגרות בתיכון.",
-    },
-  },
-  {
-    icon: ShieldCheck,
-    title: { en: "Military service", he: "שירות צבאי" },
-    eyebrow: { en: "Combat Engineering Corps · Staff Sergeant", he: "חיל ההנדסה הקרבית · סמל ראשון" },
-    text: {
-      en: "Combat Engineering Corps platoon sergeant, with active reserve service. The experience adds discipline, ownership, and calm execution under pressure.",
-      he: "מפקד מחלקה בחיל ההנדסה הקרבית ושירות מילואים פעיל. הניסיון מוסיף משמעת, אחריות וביצוע רגוע גם תחת לחץ.",
-    },
-  },
-];
-
-const strengths = [
-  {
-    icon: Brain,
-    title: { en: "AI and deep learning", he: "AI ו-Deep Learning" },
-    text: {
-      en: "Deep Learning, PyTorch, XAI workflows, model interpretation, and feature-attribution thinking.",
-      he: "Deep Learning, PyTorch, תהליכי XAI, פרשנות מודלים וחשיבה על Feature Attribution.",
-    },
-  },
-  {
-    icon: Layers,
-    title: { en: "Product-minded UI", he: "ממשקים עם חשיבה מוצרית" },
-    text: {
-      en: "Clear flows, strong hierarchy, responsive layouts, and screens built around real user actions.",
-      he: "זרימות ברורות, היררכיה חזקה, התאמה למסכים וממשקים שנבנים סביב פעולות משתמש אמיתיות.",
-    },
-  },
-  {
-    icon: Server,
-    title: { en: "Full-stack delivery", he: "פיתוח Full-stack" },
-    text: {
-      en: "Frontend/backend separation, authentication flows, API thinking, deployment, and maintainable structure.",
-      he: "הפרדה בין צד לקוח ושרת, אימות משתמשים, חשיבה על API, פריסה ומבנה קוד שנוח לתחזק.",
-    },
-  },
-  {
-    icon: LineChart,
-    title: { en: "Data and FinTech", he: "דאטה ו-FinTech" },
-    text: {
-      en: "Trading logic, REST data fetching, backtesting, analysis flows, Pandas, NumPy, and decision support.",
-      he: "לוגיקת מסחר, שליפת נתונים דרך REST, Backtesting, זרימות ניתוח, Pandas, NumPy ותמיכה בקבלת החלטות.",
-    },
-  },
-];
-
-const aiFocus = [
-  {
-    icon: Brain,
-    title: { en: "Explainable AI", he: "Explainable AI" },
-    text: {
-      en: "Working with XAI concepts, feature attribution, and visual explanations for deep learning behavior.",
-      he: "עבודה עם מושגי XAI, Feature Attribution והסברים ויזואליים להתנהגות של מודלי Deep Learning.",
-    },
-  },
-  {
-    icon: Code2,
-    title: { en: "AI-assisted development", he: "פיתוח בסיוע AI" },
-    text: {
-      en: "Using modern AI coding tools to prototype faster, explore implementations, debug, and improve product copy and UX decisions.",
-      he: "שימוש בכלי קוד מבוססי AI כדי לבנות אבות טיפוס מהר יותר, לבדוק מימושים, לדבג ולשפר UX וטקסטים מוצריים.",
-    },
-  },
-  {
-    icon: ExternalLink,
-    title: { en: "Public demos", he: "דמואים פומביים" },
-    text: {
-      en: "Prioritizing projects that recruiters can open, test, and evaluate without setup friction.",
-      he: "דגש על פרויקטים שמגייסים יכולים לפתוח, לבדוק ולהעריך בלי התקנות מסובכות.",
-    },
-  },
-  {
-    icon: Sparkles,
-    title: { en: "Learning in public", he: "למידה גלויה" },
-    text: {
-      en: "Actively expanding the portfolio with AI-oriented experiments, production-minded interfaces, and documented code.",
-      he: "הרחבת הפורטפוליו עם ניסויי AI, ממשקים בגישה מוצרית וקוד מתועד וברור.",
-    },
-  },
-];
-
-const skillGroups = [
-  { icon: Code2, label: "Python · Java · C/C++ · JavaScript" },
-  { icon: Database, label: "SQL · Databases · Data Structures" },
-  { icon: Brain, label: "Deep Learning · PyTorch · Machine Learning" },
-  { icon: Sparkles, label: "AI-assisted development · Rapid prototyping" },
-  { icon: Server, label: "Node.js · Git · REST APIs · Deployment" },
-  { icon: BookOpen, label: "Hebrew: Native · English: Full professional proficiency" },
-];
+function initialTheme() {
+  const stored = readStored("theme");
+  if (stored === "light" || stored === "dark") return stored;
+  return window.matchMedia?.("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
 
 function App() {
-  const [language, setLanguage] = useState("en");
+  const [language, setLanguage] = useState(initialLanguage);
+  const [theme, setTheme] = useState(initialTheme);
   const t = content[language];
 
-  const liveProjects = useMemo(
-    () => projects.filter((project) => project.live).length,
-    []
-  );
+  useEffect(() => {
+    const root = document.documentElement;
+    root.lang = t.lang;
+    root.dir = t.dir;
+    document.title = t.docTitle;
+    writeStored("lang", language);
+  }, [language, t]);
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    writeStored("theme", theme);
+  }, [theme]);
 
   return (
-    <main className="min-h-screen overflow-hidden bg-[#0b0f10] text-white">
-      <div className="absolute inset-x-0 top-0 -z-0 h-[580px] bg-[linear-gradient(135deg,rgba(20,184,166,0.16),rgba(245,158,11,0.08)_48%,rgba(244,63,94,0.11))]" />
+    <div className="relative z-10 min-h-screen">
+      <a
+        href="#work"
+        className="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-ink focus:px-4 focus:py-2 focus:text-paper"
+      >
+        Skip to content
+      </a>
 
-      <div className="relative z-10" dir={t.dir}>
-        <header className="mx-auto flex max-w-7xl items-center justify-between px-5 py-5 sm:px-8">
-          <a href="#top" className="inline-flex items-center gap-3">
-            <span className="grid size-10 place-items-center rounded-lg border border-white/15 bg-white/10 text-sm font-black">
-              OA
-            </span>
-            <span className="hidden text-sm font-semibold text-zinc-200 sm:block">
-              Oded Atias
-            </span>
-          </a>
+      <Header
+        t={t}
+        theme={theme}
+        onTheme={() => setTheme(theme === "dark" ? "light" : "dark")}
+        onLanguage={() => setLanguage(language === "en" ? "he" : "en")}
+      />
 
-          <nav className="hidden items-center gap-6 text-sm text-zinc-300 md:flex">
-            <a className="transition hover:text-white" href="#projects">
-              {t.nav[0]}
-            </a>
-            <a className="transition hover:text-white" href="#ai-focus">
-              {t.nav[1]}
-            </a>
-            <a className="transition hover:text-white" href="#background">
-              {t.nav[2]}
-            </a>
-            <a className="transition hover:text-white" href="#contact">
-              {t.nav[3]}
-            </a>
-          </nav>
+      <main>
+        <Hero t={t} />
+        <Ticker />
+        <Work t={t} language={language} />
+        <Focus t={t} language={language} />
+        <Background t={t} language={language} />
+        <Toolbox t={t} language={language} />
+        <Contact t={t} />
+      </main>
 
+      <footer className="border-t border-line px-5 py-8 sm:px-8">
+        <div className="mx-auto flex max-w-6xl flex-col justify-between gap-2 font-mono text-xs text-muted sm:flex-row">
+          <span>© {new Date().getFullYear()} Oded Atias</span>
+          <span>{t.footer}</span>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+/* ---------- layout pieces ---------- */
+
+function Reveal({ children, className = "", delay = 0 }) {
+  const reduce = useReducedMotion();
+  if (reduce) return <div className={className}>{children}</div>;
+  return (
+    <motion.div
+      className={className}
+      initial={{ opacity: 0, y: 18 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.55, delay, ease: [0.22, 1, 0.36, 1] }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+function Header({ t, theme, onTheme, onLanguage }) {
+  return (
+    <header className="sticky top-0 z-40 border-b border-line/70 bg-paper/85 backdrop-blur">
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3 sm:px-8">
+        <a href="#top" className="flex items-center gap-2.5" aria-label="Oded Atias, top of page">
+          <span className="grid size-8 place-items-center rounded-full bg-ink font-mono text-[11px] font-medium text-paper">
+            OA
+          </span>
+        </a>
+
+        <nav className="hidden items-center gap-7 text-sm md:flex" aria-label="Sections">
+          {t.nav.map(([id, label]) => (
+            <a key={id} href={`#${id}`} className="text-muted transition hover:text-ink">
+              {label}
+            </a>
+          ))}
+        </nav>
+
+        <div className="flex items-center gap-2">
           <button
             type="button"
-            onClick={() => setLanguage(language === "en" ? "he" : "en")}
-            className="inline-flex items-center gap-2 rounded-md border border-white/15 bg-white/10 px-3 py-2 text-sm font-semibold text-white transition hover:border-white/30 hover:bg-white/15"
+            onClick={onTheme}
+            aria-label={t.themeLabel}
+            className="grid size-9 place-items-center rounded-full border border-line text-ink transition hover:bg-paper-2"
           >
-            <Languages size={16} />
+            {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
+          </button>
+          <button
+            type="button"
+            onClick={onLanguage}
+            className="inline-flex h-9 items-center gap-2 rounded-full border border-line px-3.5 text-sm font-medium transition hover:bg-paper-2"
+          >
+            <Languages size={15} />
             {t.switchLabel}
           </button>
-        </header>
+        </div>
+      </div>
+    </header>
+  );
+}
 
-        <section
-          id="top"
-          className="mx-auto grid min-h-[calc(100vh-84px)] max-w-7xl items-center gap-10 px-5 pb-14 pt-8 sm:px-8 lg:grid-cols-[1.03fr_0.97fr]"
+function Hero({ t }) {
+  return (
+    <section id="top" className="px-5 pb-14 pt-14 sm:px-8 sm:pt-20 lg:pb-20">
+      <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.25fr_0.75fr] lg:items-end">
+        <div>
+          <div className="inline-flex items-center gap-2.5 rounded-full border border-line px-3.5 py-1.5 font-mono text-xs text-muted">
+            <span className="pulse-dot size-2 rounded-full bg-accent" />
+            {t.openToWork}
+          </div>
+
+          <h1 className="mt-8 font-display text-[clamp(4.5rem,15vw,11.5rem)] font-normal leading-[0.84] tracking-tight">
+            <span className="block">{t.name[0]}</span>
+            <span className="block text-accent italic">{t.name[1]}</span>
+          </h1>
+
+          <p className="mt-9 font-mono text-xs uppercase tracking-[0.18em] text-muted">
+            {t.role}
+          </p>
+          <p className="mt-4 max-w-xl text-lg leading-8 text-ink/85">{t.intro}</p>
+
+          <div className="mt-9 flex flex-wrap gap-3">
+            <a
+              href="#work"
+              className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-accent-ink transition hover:brightness-110"
+            >
+              {t.ctaWork}
+              <ArrowUpRight size={17} />
+            </a>
+            <a
+              href={`mailto:${profile.email}`}
+              className="inline-flex items-center gap-2 rounded-full border border-ink/25 px-6 py-3 text-sm font-semibold transition hover:bg-paper-2"
+            >
+              {t.ctaMail}
+              <Mail size={16} />
+            </a>
+          </div>
+        </div>
+
+        <dl className="divide-y divide-line border-y border-line">
+          {t.facts.map(([label, value]) => (
+            <div key={label} className="grid grid-cols-[6.5rem_1fr] gap-4 py-4">
+              <dt className="font-mono text-xs uppercase tracking-[0.14em] text-muted">
+                {label}
+              </dt>
+              <dd className="text-[15px] leading-6">{value}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </section>
+  );
+}
+
+function Ticker() {
+  const items = [...ticker, ...ticker];
+  return (
+    <div
+      dir="ltr"
+      aria-hidden="true"
+      className="ticker overflow-hidden border-y border-line bg-paper-2/60 py-4"
+    >
+      <div className="ticker-track flex w-max gap-10 whitespace-nowrap font-display text-3xl">
+        {items.map((item, i) => (
+          <span key={i} className="flex items-center gap-10">
+            {item}
+            <span className="text-accent">✦</span>
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function SectionHead({ index, title, intro }) {
+  return (
+    <Reveal className="mb-10 grid gap-4 md:grid-cols-[8rem_1fr]">
+      <span className="font-mono text-xs uppercase tracking-[0.18em] text-accent">{index}</span>
+      <div>
+        <h2 className="font-display text-5xl leading-none sm:text-6xl">{title}</h2>
+        {intro && <p className="mt-4 max-w-2xl text-base leading-7 text-muted">{intro}</p>}
+      </div>
+    </Reveal>
+  );
+}
+
+/* ---------- work ---------- */
+
+function Work({ t, language }) {
+  const [open, setOpen] = useState(() => new Set([0]));
+
+  function toggle(index) {
+    setOpen((current) => {
+      const next = new Set(current);
+      if (next.has(index)) next.delete(index);
+      else next.add(index);
+      return next;
+    });
+  }
+
+  return (
+    <section id="work" className="px-5 py-20 sm:px-8 sm:py-28">
+      <div className="mx-auto max-w-6xl">
+        <SectionHead index="01" title={t.work.title} intro={t.work.intro} />
+
+        <ul className="border-t border-ink">
+          {projects.map((project, i) => (
+            <ProjectRow
+              key={project.id}
+              project={project}
+              index={i}
+              isOpen={open.has(i)}
+              onToggle={() => toggle(i)}
+              t={t}
+              language={language}
+            />
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
+function ProjectRow({ project, index, isOpen, onToggle, t, language }) {
+  const panelId = `panel-${project.id}`;
+  const number = String(index + 1).padStart(2, "0");
+
+  return (
+    <li className="border-b border-line">
+      <h3>
+        <button
+          type="button"
+          onClick={onToggle}
+          aria-expanded={isOpen}
+          aria-controls={panelId}
+          className="group grid w-full grid-cols-[2.5rem_1fr_auto] items-center gap-3 py-6 text-start sm:grid-cols-[4rem_1fr_11rem_auto] sm:gap-6 sm:py-8"
         >
-          <div className="max-w-3xl">
-            <div className="flex flex-wrap gap-2">
-              <div className="inline-flex items-center gap-2 rounded-md border border-emerald-300/30 bg-emerald-300/10 px-3 py-2 text-sm font-semibold text-emerald-100">
-                <Sparkles size={16} />
-                {t.eyebrow}
-              </div>
-              <div className="inline-flex items-center gap-2 rounded-md border border-amber-300/40 bg-amber-300/10 px-3 py-2 text-sm font-semibold text-amber-100">
-                <span className="size-2 rounded-full bg-amber-300" />
-                {t.openToWork}
-              </div>
-            </div>
+          <span className="font-mono text-xs text-muted">{number}</span>
+          <span className="flex flex-wrap items-center gap-x-4 gap-y-1">
+            <span className="font-display text-3xl leading-tight transition group-hover:text-accent sm:text-4xl lg:text-5xl">
+              {project.title}
+            </span>
+            {project.featured && (
+              <span className="rounded-full bg-ink px-2.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-paper">
+                {t.work.featured}
+              </span>
+            )}
+          </span>
+          <span className="hidden font-mono text-xs uppercase tracking-[0.12em] text-muted sm:block">
+            {project.type[language]}
+          </span>
+          <span
+            className={`grid size-9 place-items-center rounded-full border border-line transition group-hover:border-ink ${
+              isOpen ? "bg-ink text-paper" : ""
+            }`}
+          >
+            <Plus size={16} className={`transition-transform ${isOpen ? "rotate-45" : ""}`} />
+          </span>
+        </button>
+      </h3>
 
-            <h1 className="mt-7 text-balance text-6xl font-black leading-[0.95] text-white sm:text-7xl lg:text-8xl">
-              {t.name}
-            </h1>
-
-            <p className="mt-6 max-w-3xl text-2xl font-bold leading-tight text-zinc-100 sm:text-3xl">
-              {t.title}
-            </p>
-
-            <p className="mt-5 max-w-2xl text-lg leading-8 text-zinc-300 sm:text-xl">
-              {t.intro}
-            </p>
-
-            <div className="mt-9 flex flex-wrap gap-3">
-              <a
-                href="#projects"
-                className="inline-flex items-center gap-2 rounded-md bg-white px-5 py-3 text-sm font-bold text-zinc-950 transition hover:bg-amber-100"
-              >
-                {t.primaryCta}
-                <ArrowUpRight size={17} />
-              </a>
-              <a
-                href={`mailto:${profile.email}`}
-                className="inline-flex items-center gap-2 rounded-md border border-white/20 px-5 py-3 text-sm font-bold text-white transition hover:border-white/40 hover:bg-white/10"
-              >
-                {t.secondaryCta}
-                <Mail size={17} />
-              </a>
-            </div>
-
-            <div className="mt-10 grid gap-3 sm:grid-cols-3">
-              {t.proof.map((item) => (
-                <div
-                  key={item}
-                  className="rounded-lg border border-white/10 bg-white/[0.06] p-4 text-sm font-semibold text-zinc-200"
-                >
-                  {item}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="relative">
-            <div className="rounded-lg border border-white/10 bg-[#101617]/90 p-5 shadow-2xl shadow-black/30">
-              <div className="flex items-center justify-between gap-4 border-b border-white/10 pb-4">
-                <div>
-                  <p className="text-sm text-zinc-400">Oded Atias</p>
-                  <h2 className="mt-1 text-2xl font-bold text-white">
-                    {t.highlightTitle}
-                  </h2>
-                </div>
-                <ShieldCheck className="shrink-0 text-emerald-300" size={28} />
-              </div>
-
-              <div className="grid gap-5 py-6 md:grid-cols-[0.9fr_1.1fr]">
-                <div className="grid place-items-center rounded-lg border border-white/10 bg-black/20 p-5">
-                  <img
-                    src={heroImage}
-                    alt=""
-                    className="max-h-64 w-full max-w-[260px] object-contain"
-                  />
-                </div>
-
-                <div className="space-y-4">
-                  <p className="text-base leading-7 text-zinc-300">
-                    {t.highlightText}
-                  </p>
-                  <div className="grid grid-cols-2 gap-3">
-                    <Metric value={projects.length} label={t.metricProjects} />
-                    <Metric value={liveProjects} label={t.metricLive} />
-                  </div>
-                  <div className="rounded-lg border border-amber-300/30 bg-amber-300/10 p-4 text-sm leading-6 text-amber-50">
-                    Python · Java · JavaScript · React · Vue · Node.js · SQL ·
-                    PyTorch · Git
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="projects" className="bg-[#f4f2ec] px-5 py-20 text-zinc-950 sm:px-8">
-          <div className="mx-auto max-w-7xl">
-            <SectionHeading title={t.sections.projects} text={t.projectsIntro} />
-
-            <div className="mt-10 grid gap-5 lg:grid-cols-3">
-              {projects.map((project) => (
-                <article
-                  key={project.title}
-                  className="group flex min-h-[390px] flex-col rounded-lg border border-zinc-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
-                >
-                  <div className="flex flex-wrap items-start justify-between gap-3">
-                    <span
-                      className={`rounded-md border px-3 py-1 text-xs font-bold ${project.accent}`}
-                    >
-                      {project.type[language]}
-                    </span>
-                    <div className="flex flex-wrap gap-2">
-                      {project.featured && <ProjectBadge>{t.featured}</ProjectBadge>}
-                    </div>
-                  </div>
-
-                  <h3 className="mt-6 text-2xl font-black leading-tight text-zinc-950">
-                    {project.title}
-                  </h3>
-                  <p className="mt-4 flex-1 text-base leading-7 text-zinc-600">
-                    {project.summary[language]}
-                  </p>
-
-                  <div className="mt-6 flex flex-wrap gap-2">
-                    {project.stack.map((item) => (
-                      <span
-                        key={item}
-                        className="rounded-md bg-zinc-100 px-3 py-1 text-xs font-semibold text-zinc-700"
-                      >
-                        {item}
-                      </span>
-                    ))}
-                  </div>
-
-                  {project.access && (
-                    <div className="mt-6 rounded-lg border border-zinc-200 bg-zinc-50 p-4">
-                      <div className="text-sm font-bold text-zinc-900">
-                        {t.demoAccess}
-                      </div>
-                      <p className="mt-2 text-sm leading-6 text-zinc-600">
-                        {t.accessNote}
-                      </p>
-                      <div className="mt-3 grid gap-2 text-sm text-zinc-700">
-                        {project.access.unit && (
-                          <div>
-                            <span className="font-semibold">{t.unitNumber}:</span>{" "}
-                            {project.access.unit}
-                          </div>
-                        )}
-                        <div>
-                          <span className="font-semibold">{t.username}:</span>{" "}
-                          {project.access.username}
-                        </div>
-                        <div>
-                          <span className="font-semibold">{t.password}:</span>{" "}
-                          {project.access.password}
-                        </div>
-                      </div>
-                      {project.access.signup && (
-                        <p className="mt-3 text-sm leading-6 text-zinc-600">
-                          {t.signupNote}
-                        </p>
-                      )}
-                    </div>
-                  )}
-
-                  <div className="mt-7 flex flex-wrap gap-3">
-                    {project.live ? (
-                      <ProjectLink href={project.live} label={t.live} icon={ExternalLink} />
-                    ) : (
-                      <span className="inline-flex items-center rounded-md border border-zinc-200 px-4 py-2 text-sm font-bold text-zinc-500">
-                        {t.noLive}
-                      </span>
-                    )}
-                    {project.repo && (
-                      <ProjectLink href={project.repo} label={t.code} icon={GitBranch} />
-                    )}
-                  </div>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section id="ai-focus" className="px-5 py-20 sm:px-8">
-          <div className="mx-auto max-w-7xl">
-            <SectionHeading title={t.sections.ai} text={t.aiIntro} dark />
-
-            <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-              {aiFocus.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <article
-                    key={item.title.en}
-                    className="rounded-lg border border-white/10 bg-white/[0.06] p-6"
-                  >
-                    <div className="grid size-12 place-items-center rounded-lg bg-emerald-300 text-zinc-950">
-                      <Icon size={22} />
-                    </div>
-                    <h3 className="mt-5 text-xl font-bold text-white">
-                      {item.title[language]}
-                    </h3>
-                    <p className="mt-3 text-sm leading-7 text-zinc-400">
-                      {item.text[language]}
-                    </p>
-                  </article>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        <section id="background" className="px-5 py-20 sm:px-8">
-          <div className="mx-auto max-w-7xl">
-            <SectionHeading
-              title={t.sections.background}
-              text={t.backgroundIntro}
-              dark
-            />
-
-            <div className="mt-10 grid gap-5 lg:grid-cols-3">
-              {background.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <article
-                    key={item.title.en}
-                    className="rounded-lg border border-white/10 bg-white/[0.06] p-6"
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="grid size-12 place-items-center rounded-lg bg-white text-zinc-950">
-                        <Icon size={22} />
-                      </div>
-                      <div>
-                        <p className="text-xs font-bold uppercase tracking-[0.16em] text-amber-200">
-                          {item.eyebrow[language]}
-                        </p>
-                        <h3 className="mt-2 text-xl font-bold text-white">
-                          {item.title[language]}
-                        </h3>
-                      </div>
-                    </div>
-                    <p className="mt-5 text-sm leading-7 text-zinc-400">
-                      {item.text[language]}
-                    </p>
-                  </article>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        <section id="expertise" className="bg-[#101617] px-5 py-20 sm:px-8">
-          <div className="mx-auto max-w-7xl">
-            <SectionHeading
-              title={t.sections.expertise}
-              text={t.expertiseIntro}
-              dark
-            />
-
-            <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-              {strengths.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <article
-                    key={item.title.en}
-                    className="rounded-lg border border-white/10 bg-white/[0.06] p-6"
-                  >
-                    <div className="grid size-12 place-items-center rounded-lg bg-white text-zinc-950">
-                      <Icon size={22} />
-                    </div>
-                    <h3 className="mt-5 text-xl font-bold text-white">
-                      {item.title[language]}
-                    </h3>
-                    <p className="mt-3 text-sm leading-7 text-zinc-400">
-                      {item.text[language]}
-                    </p>
-                  </article>
-                );
-              })}
-            </div>
-
-            <div className="mt-8 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-              {skillGroups.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <div
-                    key={item.label}
-                    className="flex items-start gap-3 rounded-lg border border-white/10 bg-black/20 p-4 text-sm font-semibold leading-6 text-zinc-200"
-                  >
-                    <Icon className="mt-0.5 shrink-0 text-emerald-300" size={18} />
-                    {item.label}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        <section id="contact" className="px-5 py-20 sm:px-8">
-          <div className="mx-auto max-w-7xl rounded-lg border border-white/10 bg-[#f4f2ec] p-7 text-zinc-950 sm:p-10">
-            <div className="grid gap-8 lg:grid-cols-[1fr_1.25fr] lg:items-center">
-              <div>
-                <p className="text-sm font-bold uppercase tracking-[0.22em] text-zinc-500">
-                  Contact
-                </p>
-                <h2 className="mt-4 text-4xl font-black leading-tight text-zinc-950">
-                  {t.sections.contact}
-                </h2>
-                <p className="mt-4 max-w-2xl text-base leading-7 text-zinc-600">
-                  {t.contactText}
-                </p>
-              </div>
-
-              <div className="grid gap-3 sm:grid-cols-2">
-                <ContactLink
-                  href={`mailto:${profile.email}`}
-                  label="Email"
-                  value={profile.email}
-                  icon={Mail}
-                />
-                <ContactLink
-                  href={`tel:${profile.phone.replaceAll("-", "")}`}
-                  label="Phone"
-                  value={profile.phone}
-                  icon={Phone}
-                />
-                <ContactLink
-                  href={profile.github}
-                  label="GitHub"
-                  value={profile.githubLabel}
-                  icon={Code2}
-                />
-                <ContactLink
-                  href={profile.linkedin}
-                  label="LinkedIn"
-                  value={profile.linkedinLabel}
-                  icon={Award}
-                />
-                <div className="sm:col-span-2">
-                  <ContactLink
-                    href="#background"
-                    label={t.resumeLabel}
-                    value={t.resumeNote}
-                    icon={FileText}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <footer className="border-t border-white/10 px-5 py-8 text-center text-sm text-zinc-500 sm:px-8">
-          <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 sm:flex-row">
-            <span>Oded Atias Portfolio</span>
-            <span>React · Vite · Tailwind CSS</span>
-          </div>
-        </footer>
-      </div>
-    </main>
-  );
-}
-
-function Metric({ value, label }) {
-  return (
-    <div className="rounded-lg border border-white/10 bg-white/[0.06] p-4">
-      <div className="text-3xl font-black text-white">{value}</div>
-      <div className="mt-1 text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500">
-        {label}
-      </div>
-    </div>
-  );
-}
-
-function SectionHeading({ title, text, dark = false }) {
-  return (
-    <div className="max-w-3xl">
       <div
-        className={`mb-4 inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm font-bold ${
-          dark
-            ? "border border-white/10 bg-white/10 text-emerald-100"
-            : "border border-zinc-200 bg-white text-zinc-700"
+        id={panelId}
+        role="region"
+        aria-label={project.title}
+        className={`grid transition-[grid-template-rows] duration-300 ease-out ${
+          isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
         }`}
       >
-        <Globe size={16} />
-        Portfolio
+        <div className="overflow-hidden" inert={!isOpen}>
+          <div className="grid gap-8 pb-10 sm:ps-[5.5rem] lg:grid-cols-[1.2fr_0.8fr]">
+            <div>
+              <p className="font-mono text-xs uppercase tracking-[0.12em] text-muted sm:hidden">
+                {project.type[language]}
+              </p>
+              <p className="mt-3 max-w-xl text-lg leading-8 sm:mt-0">{project.summary[language]}</p>
+
+              <ul className="mt-6 flex flex-wrap gap-2">
+                {project.stack.map((item) => (
+                  <li
+                    key={item}
+                    className="rounded-full border border-line px-3 py-1 font-mono text-xs text-muted"
+                  >
+                    {item}
+                  </li>
+                ))}
+              </ul>
+
+              <div className="mt-8 flex flex-wrap items-center gap-3">
+                {project.live ? (
+                  <ExternalButton href={project.live} primary>
+                    {t.work.live}
+                  </ExternalButton>
+                ) : (
+                  <span className="rounded-full border border-dashed border-line px-5 py-2.5 text-sm text-muted">
+                    {t.work.noLive}
+                  </span>
+                )}
+                {project.repo && <ExternalButton href={project.repo}>{t.work.code}</ExternalButton>}
+              </div>
+            </div>
+
+            {project.access && <AccessCard access={project.access} t={t} />}
+          </div>
+        </div>
       </div>
-      <h2
-        className={`text-4xl font-black leading-tight sm:text-5xl ${
-          dark ? "text-white" : "text-zinc-950"
-        }`}
-      >
-        {title}
-      </h2>
-      <p
-        className={`mt-4 text-lg leading-8 ${
-          dark ? "text-zinc-400" : "text-zinc-600"
-        }`}
-      >
-        {text}
-      </p>
-    </div>
+    </li>
   );
 }
 
-function ProjectBadge({ children }) {
-  return (
-    <span className="rounded-md bg-zinc-950 px-3 py-1 text-xs font-bold text-white">
-      {children}
-    </span>
-  );
-}
-
-function ProjectLink({ href, label, icon: Icon }) {
+function ExternalButton({ href, primary = false, children }) {
   return (
     <a
       href={href}
       target="_blank"
       rel="noreferrer"
-      className="inline-flex items-center gap-2 rounded-md bg-zinc-950 px-4 py-2 text-sm font-bold text-white transition hover:bg-zinc-800"
+      className={`inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition ${
+        primary
+          ? "bg-ink text-paper hover:bg-accent hover:text-accent-ink"
+          : "border border-ink/25 hover:bg-paper-2"
+      }`}
     >
-      <Icon size={16} />
-      {label}
+      {children}
+      <ArrowUpRight size={16} />
     </a>
   );
 }
 
-function ContactLink({ href, label, value, icon: Icon }) {
-  const isExternal = href.startsWith("http");
+function AccessCard({ access, t }) {
+  const rows = [
+    access.unit && [t.work.unit, access.unit],
+    [t.work.username, access.username],
+    [t.work.password, access.password],
+  ].filter(Boolean);
 
+  return (
+    <div className="self-start rounded-2xl border border-line bg-paper-2/70 p-5">
+      <p className="font-mono text-xs uppercase tracking-[0.14em] text-accent">{t.work.demo}</p>
+      <dl className="mt-4 space-y-2.5">
+        {rows.map(([label, value]) => (
+          <div key={label} className="flex items-center justify-between gap-3">
+            <dt className="text-sm text-muted">{label}</dt>
+            <dd className="flex items-center gap-2">
+              <code dir="ltr" className="font-mono text-sm">
+                {value}
+              </code>
+              <CopyButton value={value} t={t} />
+            </dd>
+          </div>
+        ))}
+      </dl>
+      {access.signup && <p className="mt-4 text-sm leading-6 text-muted">{t.work.signup}</p>}
+    </div>
+  );
+}
+
+function CopyButton({ value, t }) {
+  const [copied, setCopied] = useState(false);
+
+  async function copy() {
+    try {
+      await navigator.clipboard.writeText(value);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1400);
+    } catch {
+      /* clipboard unavailable: the value stays visible to copy by hand */
+    }
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={copy}
+      aria-label={copied ? t.work.copied : t.work.copy}
+      title={copied ? t.work.copied : t.work.copy}
+      className="grid size-7 place-items-center rounded-full text-muted transition hover:bg-line hover:text-ink"
+    >
+      {copied ? <Check size={14} /> : <Copy size={14} />}
+    </button>
+  );
+}
+
+/* ---------- focus / background / toolbox ---------- */
+
+function Focus({ t, language }) {
+  return (
+    <section id="focus" className="border-t border-line bg-paper-2/50 px-5 py-20 sm:px-8 sm:py-28">
+      <div className="mx-auto max-w-6xl">
+        <SectionHead index="02" title={t.focus.title} intro={t.focus.intro} />
+        <div className="grid gap-x-12 gap-y-10 md:grid-cols-2">
+          {focus.map((item, i) => (
+            <Reveal key={item.title.en} delay={i * 0.06}>
+              <article className="border-t border-ink pt-5">
+                <span className="font-mono text-xs text-accent">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <h3 className="mt-3 font-display text-3xl">{item.title[language]}</h3>
+                <p className="mt-3 max-w-md text-base leading-7 text-muted">{item.text[language]}</p>
+              </article>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Background({ t, language }) {
+  return (
+    <section id="background" className="px-5 py-20 sm:px-8 sm:py-28">
+      <div className="mx-auto max-w-6xl">
+        <SectionHead index="03" title={t.background.title} intro={t.background.intro} />
+        <ol className="border-t border-ink">
+          {background.map((item) => (
+            <Reveal key={item.title.en}>
+              <li className="grid gap-4 border-b border-line py-8 md:grid-cols-[14rem_1fr] md:gap-10">
+                <div>
+                  <p className="font-mono text-xs uppercase tracking-[0.14em] text-accent">
+                    {item.when[language]}
+                  </p>
+                  <p className="mt-2 text-sm text-muted">{item.where[language]}</p>
+                </div>
+                <div>
+                  <h3 className="font-display text-3xl leading-tight">{item.title[language]}</h3>
+                  <p className="mt-3 max-w-2xl text-base leading-7 text-muted">
+                    {item.text[language]}
+                  </p>
+                </div>
+              </li>
+            </Reveal>
+          ))}
+        </ol>
+      </div>
+    </section>
+  );
+}
+
+function Toolbox({ t, language }) {
+  return (
+    <section className="border-t border-line bg-paper-2/50 px-5 py-20 sm:px-8 sm:py-24">
+      <div className="mx-auto max-w-6xl">
+        <SectionHead index="04" title={t.skills.title} />
+        <div className="grid gap-x-12 gap-y-8 md:grid-cols-2">
+          {skills.map((group) => (
+            <Reveal key={group.label.en}>
+              <div className="border-t border-line pt-4">
+                <h3 className="font-mono text-xs uppercase tracking-[0.14em] text-muted">
+                  {group.label[language]}
+                </h3>
+                <ul className="mt-3 flex flex-wrap gap-2">
+                  {group.items.map((item) => {
+                    const label = typeof item === "string" ? item : item[language];
+                    return (
+                      <li key={label} className="rounded-full bg-paper px-3.5 py-1.5 text-sm ring-1 ring-line">
+                        {label}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------- contact ---------- */
+
+function Contact({ t }) {
+  const links = [
+    { label: "GitHub", value: profile.githubLabel, href: profile.github },
+    { label: "LinkedIn", value: profile.linkedinLabel, href: profile.linkedin },
+  ];
+
+  return (
+    <section id="contact" className="px-5 py-24 sm:px-8 sm:py-32">
+      <div className="mx-auto max-w-6xl">
+        <Reveal>
+          <h2 className="max-w-4xl font-display text-[clamp(3rem,9vw,7rem)] leading-[0.92]">
+            {t.contact.title}
+          </h2>
+          <p className="mt-6 max-w-xl text-lg leading-8 text-muted">{t.contact.text}</p>
+
+          <a
+            href={`mailto:${profile.email}`}
+            dir="ltr"
+            className="mt-10 inline-flex items-center gap-3 border-b-2 border-accent pb-1 font-display text-3xl transition hover:text-accent sm:text-5xl"
+          >
+            {profile.email}
+            <ArrowUpRight className="size-7 sm:size-10" />
+          </a>
+
+          <div className="mt-12 grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-3">
+            <ContactCell
+              label={t.contact.phone}
+              value={profile.phone}
+              href={`tel:${profile.phone.replaceAll("-", "")}`}
+              icon={<Phone size={15} />}
+            />
+            {links.map((link) => (
+              <ContactCell key={link.label} {...link} external />
+            ))}
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+function ContactCell({ label, value, href, icon, external = false }) {
   return (
     <a
       href={href}
-      target={isExternal ? "_blank" : undefined}
-      rel={isExternal ? "noreferrer" : undefined}
-      className="block rounded-lg border border-zinc-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+      target={external ? "_blank" : undefined}
+      rel={external ? "noreferrer" : undefined}
+      className="block bg-paper p-5 transition hover:bg-paper-2"
     >
-      <div className="flex items-center gap-2 text-sm font-bold text-zinc-950">
-        <Icon size={17} />
+      <span className="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.14em] text-muted">
+        {icon}
         {label}
-      </div>
-      <div className="mt-3 break-words text-sm leading-6 text-zinc-600">{value}</div>
+      </span>
+      <span className="mt-3 block break-words text-start text-sm">
+        <bdi dir="ltr">{value}</bdi>
+      </span>
     </a>
   );
 }
