@@ -75,12 +75,17 @@ export default function Hero({ t, language }) {
                 with no frame; the mask dissolves its backdrop into the page like soft fog. */}
             <motion.div
               style={{ scale: photoScale, opacity: photoOpacity, y: photoY }}
-              initial={reduce ? false : { filter: "blur(12px)" }}
-              animate={{ filter: "blur(0px)" }}
-              transition={{ duration: 1, delay: 0.4 }}
               className="relative me-1 shrink-0 sm:me-3"
             >
-              <Cutout eager className="w-[clamp(8.5rem,17vw,17rem)]" />
+              {/* Entrance animates opacity/position only: leaving a CSS filter on the image
+                  forces a re-rasterisation that softens its edges. */}
+              <motion.div
+                initial={reduce ? false : { opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.9, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <Cutout eager className="w-[clamp(7rem,13.5vw,13.5rem)]" />
+              </motion.div>
             </motion.div>
 
             <h1 className="relative z-10 pb-3 text-[clamp(3.4rem,8.6vw,7.4rem)] font-semibold leading-[0.9] tracking-tight">
