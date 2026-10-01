@@ -4,6 +4,7 @@ import { ArrowUpRight, Mail } from "lucide-react";
 import { profile, projects, previews, ui as uiStrings } from "../data";
 import { useMediaQuery } from "../hooks";
 import BrowserWindow from "./BrowserWindow";
+import LinkedInIcon from "./LinkedInIcon";
 import { Counter, WordReveal } from "./motion";
 
 const byId = Object.fromEntries(projects.map((p) => [p.id, p]));
@@ -109,6 +110,15 @@ export default function Hero({ t, language }) {
             >
               {t.ctaMail}
               <Mail size={16} />
+            </a>
+            <a
+              href={profile.linkedin}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.04] px-6 py-3 text-sm font-semibold backdrop-blur transition hover:border-[#0a66c2] hover:bg-[#0a66c2]/20"
+            >
+              LinkedIn
+              <LinkedInIcon size={16} />
             </a>
           </motion.div>
 

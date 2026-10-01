@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { Languages } from "lucide-react";
-import { content } from "./data";
+import { content, profile } from "./data";
+import LinkedInIcon from "./components/LinkedInIcon";
 import Hero from "./components/Hero";
 import Work from "./components/Work";
 import { Background, Contact, Focus, Ticker, Toolbox } from "./components/Sections";
@@ -77,6 +78,17 @@ function App() {
             ))}
           </nav>
 
+          <div className="flex items-center gap-2">
+          <a
+            href={profile.linkedin}
+            target="_blank"
+            rel="noreferrer"
+            aria-label="LinkedIn"
+            title="LinkedIn"
+            className="grid size-9 place-items-center rounded-full border border-white/15 transition hover:border-[#0a66c2] hover:bg-[#0a66c2]/25"
+          >
+            <LinkedInIcon size={15} />
+          </a>
           <button
             type="button"
             onClick={() => setLanguage(language === "en" ? "he" : "en")}
@@ -85,6 +97,7 @@ function App() {
             <Languages size={15} />
             {t.switchLabel}
           </button>
+          </div>
         </div>
       </header>
 
@@ -101,6 +114,14 @@ function App() {
       <footer className="border-t border-white/10 px-5 py-8 sm:px-8">
         <div className="mx-auto flex max-w-7xl flex-col justify-between gap-2 font-mono text-xs text-muted sm:flex-row">
           <span>© {new Date().getFullYear()} Oded Atias</span>
+          <a
+            href={profile.linkedin}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 transition hover:text-fg"
+          >
+            <LinkedInIcon size={13} /> linkedin.com/in/oded-atias-836b77251
+          </a>
           <span>{t.footer}</span>
         </div>
       </footer>

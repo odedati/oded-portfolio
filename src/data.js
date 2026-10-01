@@ -3,7 +3,7 @@ export const profile = {
   phone: "054-811-8698",
   github: "https://github.com/odedati",
   githubLabel: "github.com/odedati",
-  linkedin: "https://www.linkedin.com/in/oded-atias-836b77251",
+  linkedin: "https://www.linkedin.com/in/oded-atias-836b77251/",
   linkedinLabel: "linkedin.com/in/oded-atias-836b77251",
 };
 
