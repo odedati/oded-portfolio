@@ -33,13 +33,13 @@ export default function Cutout({ className = "", eager = false }) {
       </div>
 
       <div
-        className="relative aspect-[460/640] w-full"
+        className="relative aspect-[480/640] w-full"
         style={{ WebkitMaskImage: FADE, maskImage: FADE }}
       >
         <img
           src={profile.photo}
           alt="Oded Atias"
-          width="460"
+          width="480"
           height="640"
           decoding="async"
           loading={eager ? "eager" : "lazy"}
