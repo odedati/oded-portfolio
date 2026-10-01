@@ -297,3 +297,45 @@ export const ticker = [
   "REST APIs",
   "Git",
 ];
+
+const asset = (path) => `${import.meta.env.BASE_URL}${path}`;
+
+/* Preview windows. `embed: false` means the site forbids framing (or has no live site). */
+export const previews = {
+  mediclear: { poster: asset("previews/mediclear.jpg"), embed: true, hue: "#2dd4bf" },
+  "hr-battalion": { poster: asset("previews/hr-battalion.jpg"), embed: false, hue: "#4ade80", blocked: true },
+  algotrade: { kind: "chart", embed: false, hue: "#fbbf24" },
+  "social-network": { poster: asset("previews/social-network.jpg"), embed: true, hue: "#fb7185" },
+  "yaakov-bodo": { poster: asset("previews/yaakov-bodo.jpg"), embed: true, hue: "#60a5fa" },
+};
+
+export const ui = {
+  en: {
+    scroll: "Scroll",
+    stats: { projects: "Projects", live: "Live demos", degree: "B.Sc. · BGU" },
+    interact: "Interact",
+    interactOn: "Interactive. Move the pointer off the window to keep scrolling.",
+    livePreview: "Live preview",
+    screenshot: "Screenshot",
+    loadingLive: "Waking up the live site…",
+    embedBlocked: "This site blocks embedding for security, so this is a screenshot.",
+    illustrative: "Illustrative sketch, no live site",
+    project: "Project",
+    of: "of",
+    goTo: "Go to project",
+  },
+  he: {
+    scroll: "גלול",
+    stats: { projects: "פרויקטים", live: "דמואים חיים", degree: "B.Sc. · BGU" },
+    interact: "אינטראקציה",
+    interactOn: "מצב אינטראקטיבי. הזז את הסמן אל מחוץ לחלון כדי להמשיך לגלול.",
+    livePreview: "תצוגה חיה",
+    screenshot: "צילום מסך",
+    loadingLive: "מעיר את האתר החי…",
+    embedBlocked: "האתר חוסם הטמעה מטעמי אבטחה, ולכן זה צילום מסך.",
+    illustrative: "סקיצה להמחשה, אין אתר חי",
+    project: "פרויקט",
+    of: "מתוך",
+    goTo: "מעבר לפרויקט",
+  },
+};
