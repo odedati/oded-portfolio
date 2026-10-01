@@ -224,7 +224,7 @@ function ProjectText({ project, index, t, language, big = false }) {
   return (
     <div>
       <div className="flex items-center gap-4 font-mono text-xs uppercase tracking-[0.18em] text-muted">
-        <span className="text-a1">
+        <span dir="ltr" className="text-a1">
           {number} / {String(N).padStart(2, "0")}
         </span>
         <span className="h-px w-10 bg-white/20" />

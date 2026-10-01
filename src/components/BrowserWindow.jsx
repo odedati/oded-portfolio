@@ -57,7 +57,8 @@ export default function BrowserWindow({
         </span>
       </div>
 
-      <div ref={bodyRef} className="relative min-h-0 flex-1 overflow-hidden bg-black">
+      {/* Always LTR: the iframe is scaled from its top-left corner, which breaks when the page is RTL. */}
+      <div ref={bodyRef} dir="ltr" className="relative min-h-0 flex-1 overflow-hidden bg-black">
         {preview.kind === "chart" ? (
           <ChartSketch hue={preview.hue} />
         ) : (
@@ -86,7 +87,7 @@ export default function BrowserWindow({
               pointerEvents: interactive ? "auto" : "none",
               opacity: loaded ? 1 : 0,
             }}
-            className="absolute start-0 top-0 border-0 bg-white transition-opacity duration-700"
+            className="absolute left-0 top-0 border-0 bg-white transition-opacity duration-700"
           />
         )}
 
