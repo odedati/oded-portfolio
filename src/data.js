@@ -13,7 +13,7 @@ export const content = {
   en: {
     dir: "ltr",
     lang: "en",
-    docTitle: "Oded Atias · AI-oriented Software Engineer",
+    docTitle: "Oded Atias",
     nav: [
       ["work", "Work"],
       ["focus", "AI focus"],
@@ -71,7 +71,7 @@ export const content = {
   he: {
     dir: "rtl",
     lang: "he",
-    docTitle: "עודד אטיאס · מהנדס תוכנה מוכוון AI",
+    docTitle: "Oded Atias",
     nav: [
       ["work", "פרויקטים"],
       ["focus", "מיקוד AI"],

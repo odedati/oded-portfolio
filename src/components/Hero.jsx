@@ -75,7 +75,7 @@ export default function Hero({ t, language }) {
                 <WordReveal text={t.name[0]} delay={0.15} />
               </span>
               <span className="block">
-                <WordReveal text={t.name[1]} delay={0.3} className="text-grad" />
+                <WordReveal text={t.name[1]} delay={0.3} wordClassName="text-grad" />
               </span>
             </h1>
           </div>

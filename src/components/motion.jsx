@@ -23,12 +23,14 @@ export function Reveal({ children, className = "", delay = 0, y = 28, as = "div"
   );
 }
 
-/* Words slide up out of a mask. Splits on spaces, so Hebrew letters stay intact. */
-export function WordReveal({ text, className = "", delay = 0, inView = false }) {
+/* Words slide up out of a mask. Splits on spaces, so Hebrew letters stay intact.
+   `wordClassName` goes on the element that holds the text. Put a background-clip:text gradient
+   there, not on the wrapper: Chrome drops clipped text when a transformed child sits inside it. */
+export function WordReveal({ text, className = "", wordClassName = "", delay = 0, inView = false }) {
   const reduce = useReducedMotion();
   const words = text.split(" ");
 
-  if (reduce) return <span className={className}>{text}</span>;
+  if (reduce) return <span className={`${className} ${wordClassName}`}>{text}</span>;
 
   /* The in-view trigger sits on the outer element: an element clipped by an
      overflow-hidden mask never counts as intersecting, so the words cannot be the trigger. */
@@ -41,7 +43,7 @@ export function WordReveal({ text, className = "", delay = 0, inView = false }) 
       {words.map((word, i) => (
         <span key={i} className="inline-block overflow-hidden pb-[0.12em] align-bottom">
           <motion.span
-            className="inline-block"
+            className={`inline-block ${wordClassName}`}
             variants={{
               hidden: { y: "115%" },
               show: { y: "0%", transition: { duration: 0.85, delay: delay + i * 0.07, ease: EASE } },
