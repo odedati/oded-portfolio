@@ -21,6 +21,10 @@ export default function Hero({ t, language }) {
   const midY = useTransform(scrollYProgress, [0, 1], [0, -210 * k]);
   const frontY = useTransform(scrollYProgress, [0, 1], [0, -340 * k]);
   const textY = useTransform(scrollYProgress, [0, 1], [0, 90 * k]);
+  const { scrollY } = useScroll();
+  const photoScale = useTransform(scrollY, [0, 380], reduce ? [1, 1] : [1, 0.2]);
+  const photoOpacity = useTransform(scrollY, [60, 380], reduce ? [1, 1] : [1, 0]);
+  const photoY = useTransform(scrollY, [0, 380], [0, -50 * k]);
   const textOpacity = useTransform(scrollYProgress, [0, 0.7], reduce ? [1, 1] : [1, 0]);
 
   function onPointerMove(event) {
@@ -59,29 +63,41 @@ export default function Hero({ t, language }) {
             initial={reduce ? false : { opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/[0.04] py-1.5 pe-5 ps-1.5 font-mono text-xs text-muted backdrop-blur"
+            className="inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 font-mono text-xs text-muted backdrop-blur"
           >
-            <span className="bg-grad rounded-full p-[2px]">
-              <img
-                src={profile.photo}
-                alt="Oded Atias"
-                width="40"
-                height="40"
-                className="size-10 rounded-full object-cover object-[50%_18%]"
-              />
-            </span>
             <span className="pulse-dot size-2 rounded-full bg-a1" />
             {t.openToWork}
           </motion.div>
 
-          <h1 className="mt-8 text-[clamp(3.6rem,10.5vw,8.6rem)] font-semibold leading-[0.9] tracking-tight">
-            <span className="block">
-              <WordReveal text={t.name[0]} delay={0.15} />
-            </span>
-            <span className="block">
-              <WordReveal text={t.name[1]} delay={0.3} className="text-grad" />
-            </span>
-          </h1>
+          <div className="mt-8 flex items-end gap-5 sm:gap-8">
+            <h1 className=" text-[clamp(3.4rem,8.6vw,7.4rem)] font-semibold leading-[0.9] tracking-tight">
+              <span className="block">
+                <WordReveal text={t.name[0]} delay={0.15} />
+              </span>
+              <span className="block">
+                <WordReveal text={t.name[1]} delay={0.3} className="text-grad" />
+              </span>
+            </h1>
+
+            <motion.div
+              style={{ scale: photoScale, opacity: photoOpacity, y: photoY }}
+              initial={reduce ? false : { opacity: 0, scale: 0.9, filter: "blur(10px)" }}
+              animate={{ filter: "blur(0px)" }}
+              transition={{ duration: 0.9, delay: 0.5 }}
+              className="shrink-0 pb-1"
+            >
+              <div className="bg-grad rounded-[1.6rem] p-[2px] shadow-[0_30px_70px_-25px_rgba(129,140,248,0.55)]">
+                <img
+                  src={profile.photo}
+                  alt="Oded Atias"
+                  width="900"
+                  height="1000"
+                  fetchPriority="high"
+                  className="aspect-[4/5] w-[clamp(6.5rem,12.5vw,13rem)] rounded-[calc(1.6rem-2px)] object-cover object-[50%_14%]"
+                />
+              </div>
+            </motion.div>
+          </div>
 
           <motion.p
             initial={reduce ? false : { opacity: 0, y: 16 }}

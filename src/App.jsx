@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { Languages } from "lucide-react";
 import { content, profile } from "./data";
+import GitHubIcon from "./components/GitHubIcon";
 import LinkedInIcon from "./components/LinkedInIcon";
 import Hero from "./components/Hero";
 import Work from "./components/Work";
@@ -79,6 +80,16 @@ function App() {
           </nav>
 
           <div className="flex items-center gap-2">
+          <a
+            href={profile.github}
+            target="_blank"
+            rel="noreferrer"
+            aria-label="GitHub"
+            title="GitHub"
+            className="grid size-9 place-items-center rounded-full border border-white/15 transition hover:border-white/50 hover:bg-white/15"
+          >
+            <GitHubIcon size={16} />
+          </a>
           <a
             href={profile.linkedin}
             target="_blank"
