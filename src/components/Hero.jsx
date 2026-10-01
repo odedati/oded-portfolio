@@ -59,8 +59,17 @@ export default function Hero({ t, language }) {
             initial={reduce ? false : { opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 font-mono text-xs text-muted backdrop-blur"
+            className="inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/[0.04] py-1.5 pe-5 ps-1.5 font-mono text-xs text-muted backdrop-blur"
           >
+            <span className="bg-grad rounded-full p-[2px]">
+              <img
+                src={profile.photo}
+                alt="Oded Atias"
+                width="40"
+                height="40"
+                className="size-10 rounded-full object-cover object-[50%_18%]"
+              />
+            </span>
             <span className="pulse-dot size-2 rounded-full bg-a1" />
             {t.openToWork}
           </motion.div>

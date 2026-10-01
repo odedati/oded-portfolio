@@ -63,6 +63,9 @@ export function Background({ t, language }) {
       <div className="mx-auto max-w-7xl">
         <SectionHead index="03" title={t.background.title} intro={t.background.intro} />
 
+        <div className="grid gap-14 lg:grid-cols-[22rem_1fr] lg:gap-20">
+        <Portrait t={t} />
+
         <div ref={ref} className="relative ps-10 sm:ps-16">
           <span className="absolute inset-y-0 start-[0.65rem] w-px bg-white/10 sm:start-[1.15rem]" aria-hidden="true" />
           <motion.span
@@ -102,8 +105,43 @@ export function Background({ t, language }) {
             ))}
           </ol>
         </div>
+        </div>
       </div>
     </section>
+  );
+}
+
+function Portrait({ t }) {
+  const reduce = useReducedMotion();
+
+  return (
+    <motion.figure
+      initial={reduce ? false : { opacity: 0, y: 40, scale: 0.96, filter: "blur(10px)" }}
+      whileInView={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+      className="mx-auto w-full max-w-xs self-start lg:sticky lg:top-28 lg:max-w-none"
+    >
+      <div className="bg-grad rounded-[2rem] p-[2px] shadow-[0_40px_90px_-30px_rgba(129,140,248,0.45)]">
+        <div className="relative overflow-hidden rounded-[calc(2rem-2px)] bg-bg-2">
+          <img
+            src={profile.photo}
+            alt="Oded Atias"
+            width="900"
+            height="1000"
+            loading="lazy"
+            className="aspect-[9/10] w-full object-cover"
+          />
+          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent p-5 pt-16">
+            <p className="text-lg font-semibold">{t.name.join(" ")}</p>
+            <p className="mt-0.5 flex items-center gap-2 font-mono text-xs text-fg/75">
+              <span className="pulse-dot size-1.5 rounded-full bg-a1" />
+              {t.openToWork}
+            </p>
+          </div>
+        </div>
+      </div>
+    </motion.figure>
   );
 }
 
