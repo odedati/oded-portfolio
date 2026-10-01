@@ -7,13 +7,13 @@ const FADE = "linear-gradient(to bottom, #000 72%, transparent 100%)";
 export default function Cutout({ className = "", eager = false }) {
   return (
     <div
-      className={`relative aspect-[918/1180] ${className}`}
+      className={`relative aspect-[910/1180] ${className}`}
       style={{ WebkitMaskImage: FADE, maskImage: FADE }}
     >
       <img
         src={profile.photo}
         alt="Oded Atias"
-        width="918"
+        width="910"
         height="1180"
         loading={eager ? "eager" : "lazy"}
         fetchPriority={eager ? "high" : "auto"}
