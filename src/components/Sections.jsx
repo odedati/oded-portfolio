@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
 import { ArrowUpRight, Phone } from "lucide-react";
 import { background, focus, profile, skills, ticker } from "../data";
+import Cutout from "./Cutout";
 import { Reveal, SectionHead, SpotlightCard, WordReveal } from "./motion";
 
 /* ---------- ticker ---------- */
@@ -122,25 +123,14 @@ function Portrait({ t }) {
       transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
       className="mx-auto w-full max-w-xs self-start lg:sticky lg:top-28 lg:max-w-none"
     >
-      <div className="bg-grad rounded-[2rem] p-[2px] shadow-[0_40px_90px_-30px_rgba(129,140,248,0.45)]">
-        <div className="relative overflow-hidden rounded-[calc(2rem-2px)] bg-bg-2">
-          <img
-            src={profile.photo}
-            alt="Oded Atias"
-            width="900"
-            height="1000"
-            loading="lazy"
-            className="aspect-[9/10] w-full object-cover"
-          />
-          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent p-5 pt-16">
-            <p className="text-lg font-semibold">{t.name.join(" ")}</p>
-            <p className="mt-0.5 flex items-center gap-2 font-mono text-xs text-fg/75">
-              <span className="pulse-dot size-1.5 rounded-full bg-a1" />
-              {t.openToWork}
-            </p>
-          </div>
-        </div>
-      </div>
+      <Cutout />
+      <figcaption className="-mt-4 text-center">
+        <p className="text-lg font-semibold">{t.name.join(" ")}</p>
+        <p className="mt-1 flex items-center justify-center gap-2 font-mono text-xs text-muted">
+          <span className="pulse-dot size-1.5 rounded-full bg-a1" />
+          {t.openToWork}
+        </p>
+      </figcaption>
     </motion.figure>
   );
 }

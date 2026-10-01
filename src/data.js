@@ -1,5 +1,5 @@
 export const profile = {
-  photo: `${import.meta.env.BASE_URL}img/oded.jpg`,
+  photo: `${import.meta.env.BASE_URL}img/oded-cutout.png`,
   email: "oded.atias@gmail.com",
   phone: "054-811-8698",
   github: "https://github.com/odedati",

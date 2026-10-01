@@ -4,6 +4,7 @@ import { ArrowUpRight, Mail } from "lucide-react";
 import { profile, projects, previews, ui as uiStrings } from "../data";
 import { useMediaQuery } from "../hooks";
 import BrowserWindow from "./BrowserWindow";
+import Cutout from "./Cutout";
 import LinkedInIcon from "./LinkedInIcon";
 import { Counter, WordReveal } from "./motion";
 
@@ -77,25 +78,9 @@ export default function Hero({ t, language }) {
               initial={reduce ? false : { filter: "blur(12px)" }}
               animate={{ filter: "blur(0px)" }}
               transition={{ duration: 1, delay: 0.4 }}
-              className="relative -me-5 shrink-0 sm:-me-9"
+              className="relative me-1 shrink-0 sm:me-3"
             >
-              <div
-                aria-hidden="true"
-                className="absolute inset-[-12%] -z-10 rounded-full bg-a2/25 blur-3xl"
-              />
-              <img
-                src={profile.photo}
-                alt="Oded Atias"
-                width="900"
-                height="1000"
-                fetchPriority="high"
-                style={{
-                  WebkitMaskImage:
-                    "radial-gradient(ellipse 50% 62% at 50% 44%, #000 46%, transparent 100%)",
-                  maskImage: "radial-gradient(ellipse 50% 62% at 50% 44%, #000 46%, transparent 100%)",
-                }}
-                className="aspect-[9/10] w-[clamp(9rem,17vw,17rem)] max-w-none object-cover"
-              />
+              <Cutout eager className="w-[clamp(8.5rem,17vw,17rem)]" />
             </motion.div>
 
             <h1 className="relative z-10 pb-3 text-[clamp(3.4rem,8.6vw,7.4rem)] font-semibold leading-[0.9] tracking-tight">
