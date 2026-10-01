@@ -2,7 +2,6 @@ import { useRef, useState } from "react";
 import {
   AnimatePresence,
   motion,
-  useInView,
   useMotionValueEvent,
   useReducedMotion,
   useScroll,
@@ -197,15 +196,28 @@ function Stack({ t, ui, language }) {
 }
 
 function StackCard({ project, index, t, ui, language }) {
-  const ref = useRef(null);
-  const nearViewport = useInView(ref, { once: true, margin: "300px" });
+  // Live sites are heavy (and Render's free tier cold-starts), so phones only load one after a tap.
+  const [requested, setRequested] = useState(false);
   const preview = previews[project.id];
+  const canLoadLive = Boolean(preview.embed && project.live);
 
   return (
     <Reveal>
-      <article ref={ref}>
-        <div className="aspect-[1280/868]">
-          <BrowserWindow project={project} preview={preview} load={nearViewport} ui={ui} />
+      <article>
+        <div className="relative aspect-[1280/868]">
+          <BrowserWindow project={project} preview={preview} load={requested} ui={ui} />
+          {canLoadLive && !requested && (
+            <div className="absolute inset-x-0 bottom-4 flex justify-center">
+              <button
+                type="button"
+                onClick={() => setRequested(true)}
+                className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-black/70 px-4 py-2 text-sm font-medium text-fg"
+              >
+                <MousePointerClick size={15} />
+                {ui.loadLive}
+              </button>
+            </div>
+          )}
         </div>
         {preview.blocked && <p className="mt-3 text-xs text-muted">{ui.embedBlocked}</p>}
         <div className="mt-8">

@@ -1,5 +1,6 @@
 export const profile = {
   photo: `${import.meta.env.BASE_URL}img/oded-cutout.png`,
+  photoSm: `${import.meta.env.BASE_URL}img/oded-cutout-sm.webp`,
   photoFramed: `${import.meta.env.BASE_URL}img/oded-framed.jpg`,
   email: "oded.atias@gmail.com",
   phone: "054-811-8698",
@@ -304,11 +305,11 @@ const asset = (path) => `${import.meta.env.BASE_URL}${path}`;
 
 /* Preview windows. `embed: false` means the site forbids framing (or has no live site). */
 export const previews = {
-  mediclear: { poster: asset("previews/mediclear.jpg"), embed: true, hue: "#2dd4bf" },
-  "hr-battalion": { poster: asset("previews/hr-battalion.jpg"), embed: false, hue: "#4ade80", blocked: true },
+  mediclear: { poster: asset("previews/mediclear.jpg"), posterSm: asset("previews/mediclear-sm.jpg"), embed: true, hue: "#2dd4bf" },
+  "hr-battalion": { poster: asset("previews/hr-battalion.jpg"), posterSm: asset("previews/hr-battalion-sm.jpg"), embed: false, hue: "#4ade80", blocked: true },
   algotrade: { kind: "chart", embed: false, hue: "#fbbf24" },
-  "social-network": { poster: asset("previews/social-network.jpg"), embed: true, hue: "#fb7185" },
-  "yaakov-bodo": { poster: asset("previews/yaakov-bodo.jpg"), embed: true, hue: "#60a5fa" },
+  "social-network": { poster: asset("previews/social-network.jpg"), posterSm: asset("previews/social-network-sm.jpg"), embed: true, hue: "#fb7185" },
+  "yaakov-bodo": { poster: asset("previews/yaakov-bodo.jpg"), posterSm: asset("previews/yaakov-bodo-sm.jpg"), embed: true, hue: "#60a5fa" },
 };
 
 export const ui = {
@@ -325,6 +326,7 @@ export const ui = {
     project: "Project",
     of: "of",
     goTo: "Go to project",
+    loadLive: "Load live preview",
   },
   he: {
     scroll: "גלול",
@@ -339,5 +341,6 @@ export const ui = {
     project: "פרויקט",
     of: "מתוך",
     goTo: "מעבר לפרויקט",
+    loadLive: "טען תצוגה חיה",
   },
 };

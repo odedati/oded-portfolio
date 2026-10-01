@@ -18,6 +18,7 @@ export default function Hero({ t, language }) {
 
   const wide = useMediaQuery("(min-width: 1024px)");
   const k = reduce ? 0 : wide ? 1 : 0.15; // parallax strength; small screens barely move
+  const s = wide ? 1 : 0.3; // entrance timing: phones get a much shorter intro, desktop is unchanged
   const backY = useTransform(scrollYProgress, [0, 1], [0, -90 * k]);
   const midY = useTransform(scrollYProgress, [0, 1], [0, -210 * k]);
   const frontY = useTransform(scrollYProgress, [0, 1], [0, -340 * k]);
@@ -41,9 +42,9 @@ export default function Hero({ t, language }) {
     >
       {/* ambient background */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
-        <div className="drift-a absolute -start-[10%] top-[-10%] size-[46rem] rounded-full bg-a1/20 blur-[120px]" />
-        <div className="drift-b absolute -end-[8%] top-[10%] size-[40rem] rounded-full bg-a2/25 blur-[130px]" />
-        <div className="drift-a absolute bottom-[-20%] start-[30%] size-[34rem] rounded-full bg-a3/15 blur-[120px]" />
+        <div className="aura drift-a absolute -start-[10%] top-[-10%] size-[46rem] rounded-full bg-a1/20 blur-[120px]" style={{ "--aura": "rgb(94 234 212 / 0.20)" }} />
+        <div className="aura drift-b absolute -end-[8%] top-[10%] size-[40rem] rounded-full bg-a2/25 blur-[130px]" style={{ "--aura": "rgb(129 140 248 / 0.25)" }} />
+        <div className="aura drift-a absolute bottom-[-20%] start-[30%] size-[34rem] rounded-full bg-a3/15 blur-[120px]" style={{ "--aura": "rgb(240 171 252 / 0.15)" }} />
         <div className="grid-lines absolute inset-0" />
         <div
           className="absolute inset-0 opacity-70"
@@ -64,7 +65,7 @@ export default function Hero({ t, language }) {
               <motion.div
                 initial={reduce ? false : { opacity: 0, y: 18 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.9, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 0.9 * s, delay: 0.4 * s, ease: [0.22, 1, 0.36, 1] }}
               >
                 <Cutout eager className="w-[clamp(8.5rem,16vw,16rem)]" />
               </motion.div>
@@ -72,10 +73,10 @@ export default function Hero({ t, language }) {
 
             <h1 className="relative z-10 pb-3 text-[clamp(3.4rem,8.6vw,7.4rem)] font-semibold leading-[0.9] tracking-tight">
               <span className="block">
-                <WordReveal text={t.name[0]} delay={0.15} />
+                <WordReveal text={t.name[0]} delay={0.15 * s} speed={s} />
               </span>
               <span className="block">
-                <WordReveal text={t.name[1]} delay={0.3} wordClassName="text-grad" />
+                <WordReveal text={t.name[1]} delay={0.3 * s} speed={s} wordClassName="text-grad" />
               </span>
             </h1>
           </div>
@@ -83,7 +84,7 @@ export default function Hero({ t, language }) {
           <motion.p
             initial={reduce ? false : { opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.7 }}
+            transition={{ duration: 0.7 * s, delay: 0.7 * s }}
             className="mt-8 font-mono text-xs uppercase tracking-[0.2em] text-a1"
           >
             {t.role}
@@ -91,7 +92,7 @@ export default function Hero({ t, language }) {
           <motion.p
             initial={reduce ? false : { opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.8 }}
+            transition={{ duration: 0.7 * s, delay: 0.8 * s }}
             className="mt-4 max-w-xl text-lg leading-8 text-fg/80"
           >
             {t.intro}
@@ -100,7 +101,7 @@ export default function Hero({ t, language }) {
           <motion.div
             initial={reduce ? false : { opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.95 }}
+            transition={{ duration: 0.7 * s, delay: 0.95 * s }}
             className="mt-9 flex flex-wrap gap-3"
           >
             <a
@@ -131,7 +132,7 @@ export default function Hero({ t, language }) {
           <motion.dl
             initial={reduce ? false : { opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 1.1 }}
+            transition={{ duration: 0.8 * s, delay: 1.1 * s }}
             className="mt-12 grid max-w-md grid-cols-3 gap-6 border-t border-white/10 pt-6"
           >
             <Stat value={projects.length} label={ui.stats.projects} />
@@ -152,21 +153,24 @@ export default function Hero({ t, language }) {
             language={language}
             style={{ y: backY, rotate: -5 }}
             className="start-0 top-0 w-[78%]"
-            delay={0.5}
+            delay={0.5 * s}
+            speed={s}
           />
           <FloatingWindow
             id="social-network"
             language={language}
             style={{ y: midY, rotate: 3 }}
             className="end-0 top-[26%] w-[74%]"
-            delay={0.7}
+            delay={0.7 * s}
+            speed={s}
           />
           <FloatingWindow
             id="hr-battalion"
             language={language}
             style={{ y: frontY, rotate: -2 }}
             className="start-[8%] top-[56%] w-[70%]"
-            delay={0.9}
+            delay={0.9 * s}
+            speed={s}
           />
         </div>
       </div>
@@ -192,17 +196,18 @@ function Stat({ value, label }) {
   );
 }
 
-function FloatingWindow({ id, language, style, className, delay }) {
+function FloatingWindow({ id, language, style, className, delay, speed = 1 }) {
   const reduce = useReducedMotion();
+  const wide = useMediaQuery("(min-width: 1024px)");
   const ui = uiStrings[language];
   const project = byId[id];
 
   return (
     <motion.div
       style={style}
-      initial={reduce ? false : { opacity: 0, scale: 0.85, filter: "blur(10px)" }}
-      animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-      transition={{ duration: 1, delay, ease: [0.22, 1, 0.36, 1] }}
+      initial={reduce ? false : wide ? { opacity: 0, scale: 0.85, filter: "blur(10px)" } : { opacity: 0, scale: 0.92 }}
+      animate={wide ? { opacity: 1, scale: 1, filter: "blur(0px)" } : { opacity: 1, scale: 1 }}
+      transition={{ duration: 1 * speed, delay, ease: [0.22, 1, 0.36, 1] }}
       className={`absolute ${className}`}
     >
       <div className="aspect-[1280/868]">

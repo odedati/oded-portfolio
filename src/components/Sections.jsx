@@ -199,7 +199,7 @@ export function Contact({ t }) {
   return (
     <section id="contact" className="relative isolate overflow-hidden px-5 py-32 sm:px-8 sm:py-44">
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
-        <div className="drift-b absolute start-1/2 top-1/2 size-[44rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-a2/20 blur-[130px]" />
+        <div className="aura drift-b absolute start-1/2 top-1/2 size-[44rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-a2/20 blur-[130px]" style={{ "--aura": "rgb(129 140 248 / 0.20)" }} />
       </div>
 
       <div className="mx-auto max-w-7xl">

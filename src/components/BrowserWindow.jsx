@@ -62,12 +62,15 @@ export default function BrowserWindow({
         {preview.kind === "chart" ? (
           <ChartSketch hue={preview.hue} />
         ) : (
+          <picture className="contents">
+            {preview.posterSm && <source media="(max-width: 1023px)" srcSet={preview.posterSm} />}
           <img
             src={preview.poster}
             alt={`${project.title} preview`}
             loading="lazy"
             className="absolute inset-0 size-full object-cover object-top"
           />
+          </picture>
         )}
 
         {mounted && (

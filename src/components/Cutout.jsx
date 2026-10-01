@@ -36,6 +36,8 @@ export default function Cutout({ className = "", eager = false }) {
         className="relative aspect-[480/640] w-full"
         style={{ WebkitMaskImage: FADE, maskImage: FADE }}
       >
+        <picture className="contents">
+          <source media="(max-width: 1023px)" srcSet={profile.photoSm} type="image/webp" />
         <img
           src={profile.photo}
           alt="Oded Atias"
@@ -46,6 +48,7 @@ export default function Cutout({ className = "", eager = false }) {
           fetchPriority={eager ? "high" : "auto"}
           className="size-full object-cover"
         />
+        </picture>
       </div>
     </div>
   );

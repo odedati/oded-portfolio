@@ -230,3 +230,29 @@ html[dir="rtl"] [class*="tracking-"] {
     animation: none;
   }
 }
+
+/* ---- Phones and tablets only (below the 1024px desktop layout) --------------------------
+   Big blurred blobs, animated blur and backdrop blur are expensive on iPhone GPUs. Swap them for
+   cheap gradients. Nothing here applies at 1024px and up, so desktop is unchanged. */
+@media (max-width: 1023px) {
+  .aura {
+    filter: none !important;
+    animation: none !important;
+    background-color: transparent !important;
+    background-image: radial-gradient(closest-side, var(--aura), transparent) !important;
+  }
+
+  .drift-a,
+  .drift-b {
+    animation: none !important;
+  }
+
+  [class*="backdrop-blur"] {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  header > div {
+    background-color: rgb(5 7 12 / 0.92) !important;
+  }
+}

@@ -26,7 +26,7 @@ export function Reveal({ children, className = "", delay = 0, y = 28, as = "div"
 /* Words slide up out of a mask. Splits on spaces, so Hebrew letters stay intact.
    `wordClassName` goes on the element that holds the text. Put a background-clip:text gradient
    there, not on the wrapper: Chrome drops clipped text when a transformed child sits inside it. */
-export function WordReveal({ text, className = "", wordClassName = "", delay = 0, inView = false }) {
+export function WordReveal({ text, className = "", wordClassName = "", delay = 0, speed = 1, inView = false }) {
   const reduce = useReducedMotion();
   const words = text.split(" ");
 
@@ -46,7 +46,7 @@ export function WordReveal({ text, className = "", wordClassName = "", delay = 0
             className={`inline-block ${wordClassName}`}
             variants={{
               hidden: { y: "115%" },
-              show: { y: "0%", transition: { duration: 0.85, delay: delay + i * 0.07, ease: EASE } },
+              show: { y: "0%", transition: { duration: 0.85 * speed, delay: delay + i * 0.07 * speed, ease: EASE } },
             }}
           >
             {word}
