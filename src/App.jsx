@@ -60,11 +60,13 @@ function App() {
       />
 
       <header className="fixed inset-x-0 top-0 z-50 px-4 pt-4">
-        <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 rounded-full border border-white/10 bg-bg/60 py-2 pe-2 ps-4 backdrop-blur-xl">
-          <a href="#top" className="flex items-center gap-2.5" aria-label="Oded Atias, top of page">
-            <span className="bg-grad grid size-8 place-items-center rounded-full font-mono text-[11px] font-semibold text-[#05070c]">
-              OA
-            </span>
+        <div className="mx-auto flex max-w-5xl items-center justify-between gap-2 rounded-full border border-white/10 bg-bg/60 py-2 pe-2 ps-2.5 backdrop-blur-xl sm:gap-4 sm:ps-4">
+          <a
+            href="#contact"
+            className="inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 font-mono text-[11px] text-fg/85 transition hover:bg-white/10 sm:gap-2.5 sm:px-3.5 sm:py-2 sm:text-xs"
+          >
+            <span className="pulse-dot size-2 rounded-full bg-a1" />
+            {t.openToWork}
           </a>
 
           <nav className="hidden items-center gap-1 text-sm md:flex" aria-label="Sections">
@@ -79,14 +81,14 @@ function App() {
             ))}
           </nav>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
           <a
             href={profile.github}
             target="_blank"
             rel="noreferrer"
             aria-label="GitHub"
             title="GitHub"
-            className="grid size-9 place-items-center rounded-full border border-white/15 transition hover:border-white/50 hover:bg-white/15"
+            className="grid size-8 place-items-center rounded-full border border-white/15 transition hover:border-white/50 hover:bg-white/15 sm:size-9"
           >
             <GitHubIcon size={16} />
           </a>
@@ -96,14 +98,14 @@ function App() {
             rel="noreferrer"
             aria-label="LinkedIn"
             title="LinkedIn"
-            className="grid size-9 place-items-center rounded-full border border-white/15 transition hover:border-[#0a66c2] hover:bg-[#0a66c2]/25"
+            className="grid size-8 place-items-center rounded-full border border-white/15 transition hover:border-[#0a66c2] hover:bg-[#0a66c2]/25 sm:size-9"
           >
             <LinkedInIcon size={15} />
           </a>
           <button
             type="button"
             onClick={() => setLanguage(language === "en" ? "he" : "en")}
-            className="inline-flex h-9 items-center gap-2 rounded-full border border-white/15 px-3.5 text-sm font-medium transition hover:bg-white/10"
+            className="inline-flex h-8 items-center gap-1.5 rounded-full border border-white/15 px-3 text-sm font-medium transition hover:bg-white/10 sm:h-9 sm:gap-2 sm:px-3.5"
           >
             <Languages size={15} />
             {t.switchLabel}

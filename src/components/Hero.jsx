@@ -22,10 +22,6 @@ export default function Hero({ t, language }) {
   const midY = useTransform(scrollYProgress, [0, 1], [0, -210 * k]);
   const frontY = useTransform(scrollYProgress, [0, 1], [0, -340 * k]);
   const textY = useTransform(scrollYProgress, [0, 1], [0, 90 * k]);
-  const { scrollY } = useScroll();
-  const photoScale = useTransform(scrollY, [0, 380], reduce ? [1, 1] : [1, 0.2]);
-  const photoOpacity = useTransform(scrollY, [60, 380], reduce ? [1, 1] : [1, 0]);
-  const photoY = useTransform(scrollY, [0, 380], [0, -50 * k]);
   const textOpacity = useTransform(scrollYProgress, [0, 0.7], reduce ? [1, 1] : [1, 0]);
 
   function onPointerMove(event) {
@@ -60,23 +56,9 @@ export default function Hero({ t, language }) {
 
       <div className="mx-auto grid max-w-7xl items-center gap-16 lg:grid-cols-[1.05fr_0.95fr]">
         <motion.div style={{ y: textY, opacity: textOpacity }}>
-          <motion.div
-            initial={reduce ? false : { opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 font-mono text-xs text-muted backdrop-blur"
-          >
-            <span className="pulse-dot size-2 rounded-full bg-a1" />
-            {t.openToWork}
-          </motion.div>
-
-          <div className="mt-8 flex items-end">
-            {/* Photo first in the DOM: it sits at the start of the line (left in EN, right in HE),
-                with no frame; the mask dissolves its backdrop into the page like soft fog. */}
-            <motion.div
-              style={{ scale: photoScale, opacity: photoOpacity, y: photoY }}
-              className="relative me-1 shrink-0 sm:me-3"
-            >
+          <div className="flex items-end">
+            {/* Photo first in the DOM: it sits at the start of the line (left in EN, right in HE). */}
+            <div className="relative me-1 shrink-0 sm:me-3">
               {/* Entrance animates opacity/position only: leaving a CSS filter on the image
                   forces a re-rasterisation that softens its edges. */}
               <motion.div
@@ -84,9 +66,9 @@ export default function Hero({ t, language }) {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.9, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
               >
-                <Cutout eager className="w-[clamp(7rem,13.5vw,13.5rem)]" />
+                <Cutout eager className="w-[clamp(8.5rem,16vw,16rem)]" />
               </motion.div>
-            </motion.div>
+            </div>
 
             <h1 className="relative z-10 pb-3 text-[clamp(3.4rem,8.6vw,7.4rem)] font-semibold leading-[0.9] tracking-tight">
               <span className="block">
