@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { motion, useScroll, useSpring } from "framer-motion";
-import { Languages } from "lucide-react";
+import { AnimatePresence, motion, useMotionValueEvent, useReducedMotion, useScroll, useSpring } from "framer-motion";
+import { ArrowUp, Languages } from "lucide-react";
 import { content, profile } from "./data";
 import GitHubIcon from "./components/GitHubIcon";
 import LinkedInIcon from "./components/LinkedInIcon";
@@ -41,8 +41,12 @@ function App() {
     writeStored("lang", language);
   }, [language, t]);
 
-  const { scrollYProgress } = useScroll();
+  const { scrollY, scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, { stiffness: 140, damping: 30, mass: 0.3 });
+
+  const reduceMotion = useReducedMotion();
+  const [showTop, setShowTop] = useState(false);
+  useMotionValueEvent(scrollY, "change", (y) => setShowTop(y > 600));
 
   return (
     <div className="relative min-h-screen">
@@ -123,6 +127,25 @@ function App() {
         <Toolbox t={t} language={language} />
         <Contact t={t} />
       </main>
+
+      {/* Phones and tablets only: the desktop layout has the nav bar and a short scroll to the top. */}
+      <AnimatePresence>
+        {showTop && (
+          <motion.button
+            type="button"
+            aria-label={t.backToTop}
+            title={t.backToTop}
+            initial={{ opacity: 0, y: 16, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 16, scale: 0.9 }}
+            transition={{ duration: 0.22 }}
+            onClick={() => window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" })}
+            className="bg-grad fixed bottom-[max(1.25rem,env(safe-area-inset-bottom))] end-5 z-50 grid size-12 place-items-center rounded-full text-[#05070c] shadow-[0_10px_30px_-8px_rgba(129,140,248,0.7)] active:scale-95 lg:hidden"
+          >
+            <ArrowUp size={22} strokeWidth={2.5} />
+          </motion.button>
+        )}
+      </AnimatePresence>
 
       <footer className="border-t border-white/10 px-5 py-8 sm:px-8">
         <div className="mx-auto flex max-w-7xl flex-col justify-between gap-2 font-mono text-xs text-muted sm:flex-row">
