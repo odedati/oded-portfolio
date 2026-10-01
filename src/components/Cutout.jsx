@@ -3,7 +3,7 @@ import { profile } from "../data";
 const FADE = "linear-gradient(to bottom, #000 72%, transparent 100%)";
 
 /* Transparent-background portrait. The bottom edge dissolves into the page so the cropped
-   torso never shows a hard line; the soft shadow follows the silhouette, not a shape. */
+   torso never shows a hard line; a very soft shadow follows the silhouette. */
 export default function Cutout({ className = "", eager = false }) {
   return (
     <div
@@ -17,7 +17,7 @@ export default function Cutout({ className = "", eager = false }) {
         height="1180"
         loading={eager ? "eager" : "lazy"}
         fetchPriority={eager ? "high" : "auto"}
-        className="size-full object-cover [filter:drop-shadow(0_18px_36px_rgba(129,140,248,0.28))]"
+        className="size-full object-cover [filter:drop-shadow(0_10px_24px_rgba(129,140,248,0.12))]"
       />
     </div>
   );
