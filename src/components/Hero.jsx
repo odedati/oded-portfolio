@@ -69,8 +69,36 @@ export default function Hero({ t, language }) {
             {t.openToWork}
           </motion.div>
 
-          <div className="mt-8 flex items-end gap-5 sm:gap-8">
-            <h1 className=" text-[clamp(3.4rem,8.6vw,7.4rem)] font-semibold leading-[0.9] tracking-tight">
+          <div className="mt-8 flex items-end">
+            {/* Photo first in the DOM: it sits at the start of the line (left in EN, right in HE),
+                with no frame; the mask dissolves its backdrop into the page like soft fog. */}
+            <motion.div
+              style={{ scale: photoScale, opacity: photoOpacity, y: photoY }}
+              initial={reduce ? false : { filter: "blur(12px)" }}
+              animate={{ filter: "blur(0px)" }}
+              transition={{ duration: 1, delay: 0.4 }}
+              className="relative -me-5 shrink-0 sm:-me-9"
+            >
+              <div
+                aria-hidden="true"
+                className="absolute inset-[-12%] -z-10 rounded-full bg-a2/25 blur-3xl"
+              />
+              <img
+                src={profile.photo}
+                alt="Oded Atias"
+                width="900"
+                height="1000"
+                fetchPriority="high"
+                style={{
+                  WebkitMaskImage:
+                    "radial-gradient(ellipse 50% 62% at 50% 44%, #000 46%, transparent 100%)",
+                  maskImage: "radial-gradient(ellipse 50% 62% at 50% 44%, #000 46%, transparent 100%)",
+                }}
+                className="aspect-[9/10] w-[clamp(9rem,17vw,17rem)] max-w-none object-cover"
+              />
+            </motion.div>
+
+            <h1 className="relative z-10 pb-3 text-[clamp(3.4rem,8.6vw,7.4rem)] font-semibold leading-[0.9] tracking-tight">
               <span className="block">
                 <WordReveal text={t.name[0]} delay={0.15} />
               </span>
@@ -78,25 +106,6 @@ export default function Hero({ t, language }) {
                 <WordReveal text={t.name[1]} delay={0.3} className="text-grad" />
               </span>
             </h1>
-
-            <motion.div
-              style={{ scale: photoScale, opacity: photoOpacity, y: photoY }}
-              initial={reduce ? false : { opacity: 0, scale: 0.9, filter: "blur(10px)" }}
-              animate={{ filter: "blur(0px)" }}
-              transition={{ duration: 0.9, delay: 0.5 }}
-              className="shrink-0 pb-1"
-            >
-              <div className="bg-grad rounded-[1.6rem] p-[2px] shadow-[0_30px_70px_-25px_rgba(129,140,248,0.55)]">
-                <img
-                  src={profile.photo}
-                  alt="Oded Atias"
-                  width="900"
-                  height="1000"
-                  fetchPriority="high"
-                  className="aspect-[4/5] w-[clamp(6.5rem,12.5vw,13rem)] rounded-[calc(1.6rem-2px)] object-cover object-[50%_14%]"
-                />
-              </div>
-            </motion.div>
           </div>
 
           <motion.p
