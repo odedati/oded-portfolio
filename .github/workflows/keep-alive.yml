@@ -22,7 +22,12 @@ jobs:
           HR_SUPABASE_URL: ${{ secrets.HR_SUPABASE_URL }}
           HR_SUPABASE_KEY: ${{ secrets.HR_SUPABASE_KEY }}
         run: |
-          test -n "$HR_SUPABASE_URL" -a -n "$HR_SUPABASE_KEY" || { echo "Missing HR_SUPABASE_URL / HR_SUPABASE_KEY repo secrets"; exit 1; }
+          # Without the secrets this step is skipped (shows as a notice, not a failure).
+          # To enable it, add repo secrets HR_SUPABASE_URL and HR_SUPABASE_KEY.
+          if [ -z "$HR_SUPABASE_URL" ] || [ -z "$HR_SUPABASE_KEY" ]; then
+            echo "::notice::HR Battalion ping skipped: repo secrets HR_SUPABASE_URL / HR_SUPABASE_KEY are not set"
+            exit 0
+          fi
           curl --fail --silent --show-error --retry 3 --retry-delay 20 --max-time 60 \
             "$HR_SUPABASE_URL/rest/v1/battalions?select=id&limit=1" \
             -H "apikey: $HR_SUPABASE_KEY" -o /dev/null
