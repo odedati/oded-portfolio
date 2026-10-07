@@ -133,7 +133,7 @@ function Story({ t, ui, language }) {
                   ? ui.interactOn
                   : preview.blocked
                     ? ui.embedBlocked
-                    : preview.kind === "chart"
+                    : preview.kind === "sketch"
                       ? ui.illustrative
                       : ""}
               </span>
@@ -153,6 +153,8 @@ function Story({ t, ui, language }) {
                 </button>
               )}
             </div>
+
+            <Highlights project={project} language={language} compact />
           </div>
         </div>
 
@@ -222,6 +224,7 @@ function StackCard({ project, index, t, ui, language }) {
         {preview.blocked && <p className="mt-3 text-xs text-muted">{ui.embedBlocked}</p>}
         <div className="mt-8">
           <ProjectText project={project} index={index} t={t} language={language} />
+          <Highlights project={project} language={language} />
         </div>
       </article>
     </Reveal>
@@ -245,7 +248,7 @@ function ProjectText({ project, index, t, language, big = false }) {
 
       <h3
         className={`mt-5 font-semibold leading-[1.02] tracking-tight ${
-          big ? "text-5xl xl:text-6xl" : "text-4xl"
+          big ? "text-4xl xl:text-5xl 2xl:text-6xl" : "text-4xl"
         }`}
       >
         {project.title}
@@ -256,7 +259,7 @@ function ProjectText({ project, index, t, language, big = false }) {
         )}
       </h3>
 
-      <p className="mt-5 max-w-lg text-lg leading-8 text-fg/75">{project.summary[language]}</p>
+      <p className={`mt-5 max-w-lg text-fg/75 ${big ? "text-base leading-7 xl:text-lg xl:leading-8" : "text-lg leading-8"}`}>{project.summary[language]}</p>
 
       <ul className="mt-6 flex flex-wrap gap-2">
         {project.stack.map((item) => (
@@ -284,6 +287,25 @@ function ProjectText({ project, index, t, language, big = false }) {
 
       {project.access && <AccessCard access={project.access} t={t} />}
     </div>
+  );
+}
+
+function Highlights({ project, language, compact = false }) {
+  const items = project.highlights?.[language];
+  if (!items?.length) return null;
+
+  return (
+    <dl
+      key={project.id}
+      className={`space-y-2.5 border-t border-white/10 text-sm leading-6 ${compact ? "mt-1 pt-4" : "mt-8 pt-6"}`}
+    >
+      {items.map(([label, text]) => (
+        <div key={label} className="grid gap-x-5 sm:grid-cols-[7.5rem_1fr]">
+          <dt className="font-mono text-[11px] uppercase tracking-[0.14em] text-a1 sm:pt-1">{label}</dt>
+          <dd className="text-fg/75">{text}</dd>
+        </div>
+      ))}
+    </dl>
   );
 }
 

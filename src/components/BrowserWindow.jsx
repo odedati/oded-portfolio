@@ -33,7 +33,7 @@ export default function BrowserWindow({
 
   if (load && canEmbed && !mounted) setMounted(true);
 
-  const status = loaded ? ui.livePreview : preview.kind === "chart" ? ui.illustrative : ui.screenshot;
+  const status = loaded ? ui.livePreview : preview.kind === "sketch" ? ui.illustrative : ui.screenshot;
 
   return (
     <div
@@ -59,8 +59,8 @@ export default function BrowserWindow({
 
       {/* Always LTR: the iframe is scaled from its top-left corner, which breaks when the page is RTL. */}
       <div ref={bodyRef} dir="ltr" className="relative min-h-0 flex-1 overflow-hidden bg-black">
-        {preview.kind === "chart" ? (
-          <ChartSketch hue={preview.hue} />
+        {preview.kind === "sketch" ? (
+          <ChatSketch hue={preview.hue} />
         ) : (
           <picture className="contents">
             {preview.posterSm && <source media="(max-width: 1023px)" srcSet={preview.posterSm} />}
@@ -106,32 +106,50 @@ export default function BrowserWindow({
   );
 }
 
-/* Decorative only: no real data. Labeled as illustrative in the status chip. */
-function ChartSketch({ hue }) {
-  const line =
-    "M0,170 C40,160 60,120 100,130 C140,140 150,90 190,95 C230,100 240,60 280,70 C320,80 330,40 370,45 C410,50 420,20 460,25";
+/* Decorative only: no real content. Labeled as illustrative in the status chip. */
+function ChatSketch({ hue }) {
+  const bubbles = [
+    { mine: true, w: "46%", lines: 1 },
+    { mine: false, w: "68%", lines: 3 },
+    { mine: true, w: "38%", lines: 1 },
+    { mine: false, w: "62%", lines: 2 },
+  ];
   return (
-    <div className="absolute inset-0 grid place-items-center bg-[radial-gradient(ellipse_at_30%_20%,rgba(251,191,36,0.14),transparent_60%)]">
-      <svg viewBox="0 0 460 200" className="w-[88%]" fill="none" aria-hidden="true">
-        {[40, 80, 120, 160].map((y) => (
-          <line key={y} x1="0" x2="460" y1={y} y2={y} stroke="white" strokeOpacity="0.07" />
-        ))}
-        {Array.from({ length: 23 }).map((_, i) => {
-          const x = 10 + i * 20;
-          const h = 14 + ((i * 37) % 38);
-          const base = 150 - i * 5 - ((i * 13) % 20);
-          return <rect key={i} x={x} y={base - h} width="8" height={h} rx="2" fill={hue} fillOpacity="0.16" />;
-        })}
-        <motion.path
-          d={line}
-          stroke={hue}
-          strokeWidth="3"
-          strokeLinecap="round"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ duration: 2.2, ease: "easeInOut", repeat: Infinity, repeatDelay: 1.6 }}
-        />
-      </svg>
+    <div className="absolute inset-0 grid place-items-center bg-[radial-gradient(ellipse_at_30%_20%,rgba(251,191,36,0.14),transparent_60%)] p-[5%]">
+      <div className="grid size-full grid-cols-[0.8fr_1.2fr] gap-[3%]" aria-hidden="true">
+        <div className="space-y-[7%] rounded-xl border border-white/10 bg-white/[0.03] p-[8%]">
+          <div className="h-[9%] w-1/2 rounded-full" style={{ background: hue, opacity: 0.35 }} />
+          {[90, 70, 80, 55, 75].map((w, i) => (
+            <div key={i} className="h-[5%] rounded-full bg-white/10" style={{ width: `${w}%` }} />
+          ))}
+        </div>
+        <div className="flex flex-col rounded-xl border border-white/10 bg-white/[0.03] p-[4%]">
+          <div className="flex flex-1 flex-col justify-center gap-[5%]">
+            {bubbles.map((b, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.3 + i * 0.35 }}
+                className={`space-y-[4%] rounded-xl px-[4%] py-[3%] ${b.mine ? "ms-auto" : ""}`}
+                style={{
+                  width: b.w,
+                  background: b.mine ? `${hue}33` : "rgba(255,255,255,0.07)",
+                }}
+              >
+                {Array.from({ length: b.lines }).map((_, k) => (
+                  <div
+                    key={k}
+                    className="h-1.5 rounded-full bg-white/25"
+                    style={{ width: k === b.lines - 1 && b.lines > 1 ? "60%" : "100%" }}
+                  />
+                ))}
+              </motion.div>
+            ))}
+          </div>
+          <div className="mt-[3%] h-[9%] rounded-full border border-white/10 bg-black/30" />
+        </div>
+      </div>
     </div>
   );
 }

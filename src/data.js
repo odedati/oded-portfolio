@@ -33,7 +33,7 @@ export const content = {
     ctaMail: "Get in touch",
     facts: [
       ["Education", "B.Sc. Information Systems Engineering, BGU 2025"],
-      ["Focus", "Deep learning, explainable AI, full-stack"],
+      ["Focus", "Machine learning, explainable AI, full-stack"],
       ["Looking for", "Junior software, AI-product and full-stack roles"],
     ],
     work: {
@@ -92,7 +92,7 @@ export const content = {
     ctaMail: "דברו איתי",
     facts: [
       ["השכלה", "B.Sc. בהנדסת מערכות מידע, בן-גוריון 2025"],
-      ["מיקוד", "למידה עמוקה, AI מוסבר, Full-stack"],
+      ["מיקוד", "למידת מכונה, AI מוסבר, Full-stack"],
       ["מחפש", "תפקידי Junior בתוכנה, מוצרי AI ו-Full-stack"],
     ],
     work: {
@@ -134,13 +134,29 @@ export const content = {
 export const projects = [
   {
     id: "mediclear",
-    title: "Explainability in Deep Learning",
-    type: { en: "AI explainability", he: "הסברתיות AI" },
+    title: "MediClear: Explainability in Medical Prediction Models",
+    type: { en: "B.Sc. final project · team of 3", he: "פרויקט גמר · צוות של 3" },
     summary: {
-      en: "A deep learning explainability project using XAI techniques and feature-attribution visualizations to make neural network decisions easier to interpret.",
-      he: "פרויקט הסברתיות בלמידה עמוקה עם טכניקות XAI וויזואליזציות Feature Attribution, כדי להפוך החלטות של רשתות נוירונים לברורות יותר.",
+      en: "Research on how closely explanation methods (SHAP, LIME and each model's inherent explanations) agree with each other when predicting ICU mortality, plus an interactive web application for comparing them.",
+      he: "מחקר על מידת ההסכמה בין שיטות הסבר (SHAP, LIME וההסברים המובנים של כל מודל) בחיזוי תמותה ביחידות טיפול נמרץ, ואפליקציית ווב אינטראקטיבית להשוואה ביניהן.",
     },
-    stack: ["Python", "PyTorch", "XAI", "Deep Learning"],
+    highlights: {
+      en: [
+        ["Models", "XGBoost, Logistic Regression, Decision Tree"],
+        ["Data", "GOSSIS (WiDS Datathon 2020) and UCI Diabetes 130-US Hospitals"],
+        ["Metrics", "Kendall's W, Pearson correlation, Intersection@K, Sign Agreement"],
+        ["Finding", "Globally the methods agree more on simpler models than on XGBoost; locally no such difference appeared"],
+        ["Web app", "Public global dashboard, per-patient explanation view and admin user management (Vue 3, Node.js, MongoDB)"],
+      ],
+      he: [
+        ["מודלים", "XGBoost, Logistic Regression, Decision Tree"],
+        ["נתונים", "GOSSIS (WiDS Datathon 2020) ו-UCI Diabetes 130-US Hospitals"],
+        ["מדדים", "Kendall's W, מתאם פירסון, Intersection@K, Sign Agreement"],
+        ["ממצא", "ברמה הגלובלית השיטות מסכימות יותר במודלים פשוטים מאשר ב-XGBoost; ברמה הלוקלית לא נמצא הבדל כזה"],
+        ["אפליקציית ווב", "דשבורד גלובלי פומבי, תצוגת הסבר לכל מטופל וניהול משתמשים לאדמין (Vue 3, Node.js, MongoDB)"],
+      ],
+    },
+    stack: ["Python", "XGBoost", "SHAP", "LIME", "Vue 3", "Node.js", "MongoDB", "XAI"],
     live: "https://mediclear-project.onrender.com/",
     repo: "https://github.com/orgs/Final-Project-explainability/repositories",
     access: { username: "admin", password: "852056" },
@@ -149,12 +165,28 @@ export const projects = [
   {
     id: "hr-battalion",
     title: "HR Battalion System",
-    type: { en: "Operations platform", he: "פלטפורמת ניהול" },
+    type: { en: "Solo project · multi-tenant platform", he: "פרויקט אישי · פלטפורמה מרובת גדודים" },
     summary: {
-      en: "A battalion management platform for attendance, soldier records, dashboards and operational workflows.",
-      he: "מערכת ניהול גדודית לנוכחות, רשומות חיילים, דשבורדים ותהליכים תפעוליים.",
+      en: "A multi-tenant battalion management platform that I built solo, with a separate master portal for managing the battalions.",
+      he: "פלטפורמת ניהול גדודית מרובת גדודים שבניתי לבד, עם פורטל ניהול נפרד לניהול הגדודים.",
     },
-    stack: ["Vue 3", "Pinia", "Supabase", "Cloudflare"],
+    highlights: {
+      en: [
+        ["Isolation", "Each battalion's data is separated with Supabase Row Level Security"],
+        ["Modules", "Personnel, attendance, combat assignments, medical, armory, logistics, communications equipment, vehicles (maintenance and fueling) and internal chat"],
+        ["Access", "Roles plus read/write permissions per module"],
+        ["Backend", "Supabase (PostgreSQL, Auth) with Edge Functions for privileged operations"],
+        ["Mobile", "A separate mobile UI"],
+      ],
+      he: [
+        ["בידוד", "הנתונים של כל גדוד מבודדים באמצעות Row Level Security של Supabase"],
+        ["מודולים", "סד\"כ, נוכחות, שיבוצי לחימה, רפואה, נשקייה, לוגיסטיקה, ציוד תקשוב, רכבים (תחזוקה ותדלוק) וצ'אט פנימי"],
+        ["הרשאות", "תפקידים והרשאות קריאה/כתיבה לכל מודול"],
+        ["Backend", "Supabase (PostgreSQL, Auth) עם Edge Functions לפעולות מורשות"],
+        ["נייד", "ממשק נייד נפרד"],
+      ],
+    },
+    stack: ["Vue 3", "Vite", "Pinia", "Supabase", "PostgreSQL", "Cloudflare Pages"],
     live: "https://hr-tenant.pages.dev/login",
     repo: "https://github.com/odedati/hr-battalion-system",
     access: { unit: "5280", username: "admin", password: "6589593" },
@@ -162,13 +194,29 @@ export const projects = [
   },
   {
     id: "algotrade",
-    title: "AlgoTrade",
-    type: { en: "Automated trading system", he: "מערכת מסחר אוטומטי" },
+    title: "Investment Chat Agent",
+    type: { en: "Course project · team of 2", he: "פרויקט בקורס · צוות של 2" },
     summary: {
-      en: "A cryptocurrency trading bot with REST API data fetching, backtesting modules and risk-management logic using Pandas and NumPy.",
-      he: "בוט מסחר קריפטו עם שליפת נתוני שוק דרך REST APIs, מודולי Backtesting ולוגיקת ניהול סיכונים עם Pandas ו-NumPy.",
+      en: "An AI investment-assistant web app: chat with a GPT-4o financial assistant using live Yahoo Finance data. Built for the course From Data Mining to Algorithmic Trading (team of 2); I wrote most of the code.",
+      he: "אפליקציית ווב של עוזר השקעות מבוסס AI: צ'אט עם עוזר פיננסי GPT-4o על בסיס נתוני Yahoo Finance חיים. נבנה בקורס From Data Mining to Algorithmic Trading (צוות של 2); כתבתי את רוב הקוד.",
     },
-    stack: ["Python", "REST APIs", "Pandas", "NumPy"],
+    highlights: {
+      en: [
+        ["Chat", "GPT-4o financial assistant using live Yahoo Finance data"],
+        ["Stock pages", "Auto-generated FAQs and news for each stock"],
+        ["Deep Search", "In-depth analysis mode that remembers its results per stock"],
+        ["Alerts", "Natural-language alert triggers parsed by the backend (API only, no UI yet)"],
+        ["Stack", "Flask REST API and a React frontend"],
+      ],
+      he: [
+        ["צ'אט", "עוזר פיננסי GPT-4o על בסיס נתוני Yahoo Finance חיים"],
+        ["דפי מניות", "שאלות נפוצות וחדשות שנוצרות אוטומטית לכל מניה"],
+        ["Deep Search", "מצב ניתוח מעמיק ששומר את התוצאות לכל מניה"],
+        ["התראות", "פענוח טריגרים להתראות בשפה טבעית בצד השרת (ב-API בלבד, בלי ממשק עדיין)"],
+        ["טכנולוגיה", "Flask REST API וממשק React"],
+      ],
+    },
+    stack: ["Python", "Flask", "GPT-4o", "yfinance", "Pandas", "React", "Tailwind CSS"],
     live: "",
     repo: "https://github.com/odedati/AlgoTrage_final_project",
     featured: false,
@@ -176,12 +224,28 @@ export const projects = [
   {
     id: "social-network",
     title: "Social Network Fullstack",
-    type: { en: "Full-stack platform", he: "פלטפורמת Full-stack" },
+    type: { en: "Course project · team of 3", he: "פרויקט בקורס · צוות של 3" },
     summary: {
-      en: "A social platform with separated frontend and backend projects, deployment configuration, authentication and data-flow work.",
-      he: "רשת חברתית עם הפרדה בין Frontend ל-Backend, קונפיגורציית פריסה, אימות משתמשים ועבודה עם זרימות מידע.",
+      en: "A recipe-sharing social network built for the course Internet Development Environments (team of 3).",
+      he: "רשת חברתית לשיתוף מתכונים שנבנתה בקורס Internet Development Environments (צוות של 3).",
     },
-    stack: ["Vue", "JavaScript", "Backend API", "Render"],
+    highlights: {
+      en: [
+        ["Frontend", "Vue.js with Vue Router, Bootstrap-Vue, Vuelidate and Axios"],
+        ["API", "Node.js / Express REST API"],
+        ["Accounts", "Registration and login with bcrypt, sessions and cookies"],
+        ["Recipes", "Spoonacular recipe API"],
+        ["Data and hosting", "MySQL locally, PostgreSQL on Supabase in production, deployed on Render"],
+      ],
+      he: [
+        ["Frontend", "Vue.js עם Vue Router, Bootstrap-Vue, Vuelidate ו-Axios"],
+        ["API", "REST API ב-Node.js / Express"],
+        ["משתמשים", "הרשמה והתחברות עם bcrypt, sessions ו-cookies"],
+        ["מתכונים", "שילוב של Spoonacular API"],
+        ["נתונים ופריסה", "MySQL מקומית, PostgreSQL ב-Supabase בפרודקשן, ופריסה ב-Render"],
+      ],
+    },
+    stack: ["Vue.js", "Node.js", "Express", "MySQL", "PostgreSQL", "Render"],
     live: "https://vuerecipesproject.onrender.com/",
     repo: "https://github.com/odedati/social-network-fullstack",
     access: { username: "oded", password: "852056!", signup: true },
@@ -190,10 +254,26 @@ export const projects = [
   {
     id: "yaakov-bodo",
     title: "Yaakov Bodo Website",
-    type: { en: "Responsive website", he: "אתר רספונסיבי" },
+    type: { en: "Course assignment", he: "מטלה בקורס" },
     summary: {
-      en: "A cultural biography website with gallery, media, QR flow, Web 1/2/3 Q&A and a contact form.",
-      he: "אתר ביוגרפי-תרבותי עם גלריה, מדיה, QR, שאלות Web 1/2/3 וטופס יצירת קשר.",
+      en: "A course assignment for Web Environment Development: a biography website about the Israeli actor Yaakov Bodo.",
+      he: "מטלה בקורס Web Environment Development: אתר ביוגרפי על השחקן הישראלי יעקב בודו.",
+    },
+    highlights: {
+      en: [
+        ["Media", "Photo gallery and an embedded YouTube video section"],
+        ["QR code", "A dedicated QR code section"],
+        ["Q&A", "Web 1.0 / 2.0 / 3.0 questions and answers"],
+        ["Contact", "A contact form"],
+        ["Stack", "Plain HTML, CSS and JavaScript on GitHub Pages"],
+      ],
+      he: [
+        ["מדיה", "גלריית תמונות וקטע סרטון YouTube מוטמע"],
+        ["QR", "קטע ייעודי עם קוד QR"],
+        ["שאלות ותשובות", "שאלות ותשובות על Web 1.0 / 2.0 / 3.0"],
+        ["יצירת קשר", "טופס יצירת קשר"],
+        ["טכנולוגיה", "HTML, CSS ו-JavaScript בלבד, ב-GitHub Pages"],
+      ],
     },
     stack: ["HTML", "CSS", "JavaScript", "GitHub Pages"],
     live: "https://wed-2023.github.io/311394365/",
@@ -206,8 +286,8 @@ export const focus = [
   {
     title: { en: "Explainable AI", he: "Explainable AI" },
     text: {
-      en: "XAI concepts, feature attribution and visual explanations for deep learning behavior.",
-      he: "מושגי XAI, Feature Attribution והסברים ויזואליים להתנהגות של מודלי Deep Learning.",
+      en: "Explaining prediction models with SHAP and LIME, and comparing how closely different explanation methods agree.",
+      he: "הסבר של מודלי חיזוי עם SHAP ו-LIME, והשוואה של מידת ההסכמה בין שיטות הסבר שונות.",
     },
   },
   {
@@ -270,15 +350,15 @@ export const skills = [
   },
   {
     label: { en: "AI & data", he: "AI ודאטה" },
-    items: ["Deep Learning", "PyTorch", "Machine Learning", "Pandas", "NumPy", "XAI"],
+    items: ["Machine Learning", "XGBoost", "SHAP", "LIME", "XAI", "Pandas", "Deep Learning · PyTorch (coursework)"],
   },
   {
     label: { en: "Web & backend", he: "ווב ובקאנד" },
-    items: ["React", "Vue", "Node.js", "REST APIs", "Tailwind CSS"],
+    items: ["React", "Vue", "Node.js", "Express", "Flask", "REST APIs", "Tailwind CSS"],
   },
   {
     label: { en: "Data & delivery", he: "דאטה ופריסה" },
-    items: ["SQL", "Supabase", "Git", "Render", "Cloudflare", "AI-assisted development"],
+    items: ["SQL", "PostgreSQL", "MongoDB", "Supabase", "Git", "Render", "Cloudflare", "AI-assisted development"],
   },
   {
     label: { en: "Spoken", he: "שפות מדוברות" },
@@ -291,13 +371,16 @@ export const skills = [
 
 export const ticker = [
   "Python",
-  "PyTorch",
-  "Deep Learning",
+  "XGBoost",
+  "SHAP",
+  "LIME",
   "XAI",
   "React",
   "Vue",
   "Node.js",
+  "Flask",
   "SQL",
+  "MongoDB",
   "Supabase",
   "REST APIs",
   "Git",
@@ -309,7 +392,7 @@ const asset = (path) => `${import.meta.env.BASE_URL}${path}`;
 export const previews = {
   mediclear: { poster: asset("previews/mediclear.jpg"), posterSm: asset("previews/mediclear-sm.jpg"), embed: true, hue: "#2dd4bf" },
   "hr-battalion": { poster: asset("previews/hr-battalion.jpg"), posterSm: asset("previews/hr-battalion-sm.jpg"), embed: false, hue: "#4ade80", blocked: true },
-  algotrade: { kind: "chart", embed: false, hue: "#fbbf24" },
+  algotrade: { kind: "sketch", embed: false, hue: "#fbbf24" },
   "social-network": { poster: asset("previews/social-network.jpg"), posterSm: asset("previews/social-network-sm.jpg"), embed: true, hue: "#fb7185" },
   "yaakov-bodo": { poster: asset("previews/yaakov-bodo.jpg"), posterSm: asset("previews/yaakov-bodo-sm.jpg"), embed: true, hue: "#60a5fa" },
 };
