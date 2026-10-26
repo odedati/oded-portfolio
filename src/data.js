@@ -335,10 +335,10 @@ export const background = [
   {
     when: { en: "Service & reserves", he: "שירות ומילואים" },
     where: { en: "Combat Engineering Corps", he: "חיל ההנדסה הקרבית" },
-    title: { en: "Platoon sergeant, Staff Sergeant", he: "מפקד מחלקה, סמל ראשון" },
+    title: { en: "Platoon sergeant, Staff Sergeant", he: "סמל מחלקה, סמל ראשון" },
     text: {
       en: "Platoon sergeant with active reserve service. The experience adds discipline, ownership and calm execution under pressure.",
-      he: "מפקד מחלקה ושירות מילואים פעיל. הניסיון מוסיף משמעת, אחריות וביצוע רגוע גם תחת לחץ.",
+      he: "סמל מחלקה ושירות מילואים פעיל. הניסיון מוסיף משמעת, אחריות וביצוע רגוע גם תחת לחץ.",
     },
   },
 ];
