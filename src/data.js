@@ -197,8 +197,8 @@ export const projects = [
     title: "Investment Chat Agent",
     type: { en: "Course project · team of 2", he: "פרויקט בקורס · צוות של 2" },
     summary: {
-      en: "An AI investment-assistant web app: chat with a GPT-4o financial assistant using live Yahoo Finance data. Built for the course From Data Mining to Algorithmic Trading (team of 2); I wrote most of the code.",
-      he: "אפליקציית ווב של עוזר השקעות מבוסס AI: צ'אט עם עוזר פיננסי GPT-4o על בסיס נתוני Yahoo Finance חיים. נבנה בקורס From Data Mining to Algorithmic Trading (צוות של 2); כתבתי את רוב הקוד.",
+      en: "An AI investment-assistant web app: chat with a GPT-4o financial assistant using live Yahoo Finance data. Built for the course From Data Mining to Algorithmic Trading (team of 2).",
+      he: "אפליקציית ווב של עוזר השקעות מבוסס AI: צ'אט עם עוזר פיננסי GPT-4o על בסיס נתוני Yahoo Finance חיים. נבנה בקורס From Data Mining to Algorithmic Trading (צוות של 2).",
     },
     highlights: {
       en: [
