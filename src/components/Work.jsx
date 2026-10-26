@@ -283,6 +283,11 @@ function ProjectText({ project, index, t, language, big = false }) {
           </span>
         )}
         {project.repo && <LinkButton href={project.repo}>{t.work.code}</LinkButton>}
+        {project.docs?.map((doc) => (
+          <LinkButton key={doc.href} href={doc.href}>
+            {doc.label[language]}
+          </LinkButton>
+        ))}
       </div>
 
       {project.access && <AccessCard access={project.access} t={t} />}

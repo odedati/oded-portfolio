@@ -160,6 +160,10 @@ export const projects = [
     live: "https://mediclear-project.onrender.com/",
     repo: "https://github.com/orgs/Final-Project-explainability/repositories",
     access: { username: "admin", password: "852056" },
+    docs: [
+      { label: { en: "Poster", he: "פוסטר" }, href: `${import.meta.env.BASE_URL}docs/mediclear-poster.pdf` },
+      { label: { en: "Project book", he: "ספר הפרויקט" }, href: `${import.meta.env.BASE_URL}docs/mediclear-project-book.pdf` },
+    ],
     featured: true,
   },
   {
